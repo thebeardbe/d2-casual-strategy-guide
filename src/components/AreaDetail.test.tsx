@@ -36,7 +36,7 @@ describe('AreaDetail', () => {
   it('lists the navigation rules in prose', () => {
     renderDetail(areaById('jail-2'))
 
-    expect(screen.getByText('go straight')).toBeInTheDocument()
+    expect(screen.getByText('From the entrance: go straight')).toBeInTheDocument()
   })
 
   it('appends a rule note in parentheses to the navigation prose', () => {
@@ -49,9 +49,53 @@ describe('AreaDetail', () => {
     expect(navigation).not.toBeNull()
     expect(
       within(navigation as HTMLElement).getByText(
-        'one of a few fixed layouts (Layout depends on which side the exit is on)',
+        'From the entrance: one of a few fixed layouts (Layout depends on which side the exit is on)',
       ),
     ).toBeInTheDocument()
+  })
+
+  it('groups rules by starting point into one list item per starting point', () => {
+    renderDetail(areaById('jail-1'))
+
+    const navigation = screen.getByRole('heading', { name: 'Navigation:' }).closest('section')
+    expect(navigation).not.toBeNull()
+    const items = within(navigation as HTMLElement).getAllByRole('listitem')
+    expect(items).toHaveLength(2)
+
+    expect(items[0]).toHaveTextContent(/^From the entrance:/)
+    expect(items[0]).toHaveTextContent('go straight to Jail L2')
+    expect(items[1]).toHaveTextContent(/^From the waypoint:/)
+    expect(items[1]).toHaveTextContent('turn 90\u00b0 clockwise to Barracks')
+  })
+
+  it('shows where the waypoint is when the area has one', () => {
+    const area = areaById('jail-1')
+    expect(area.waypoint).toBeDefined()
+    renderDetail(area)
+
+    expect(screen.getByText(`Waypoint: ${area.waypoint!.where}`)).toBeInTheDocument()
+  })
+
+  it('says there is no waypoint for an area without one', () => {
+    const area = areaById('blood-moor')
+    expect(area.waypoint).toBeUndefined()
+    renderDetail(area)
+
+    expect(screen.getByText('Waypoint: none in this level')).toBeInTheDocument()
+  })
+
+  it('renders a straight-ahead direction glyph for an area that goes straight', () => {
+    renderDetail(areaById('jail-2'))
+
+    const glyph = screen.getByRole('img', { name: 'Straight ahead' })
+    expect(glyph).toHaveAttribute('aria-label', 'Straight ahead')
+  })
+
+  it('renders a counter-clockwise direction glyph for a counter-clockwise area', () => {
+    renderDetail(areaById('jail-1'))
+
+    const glyph = screen.getByRole('img', { name: 'Turn counter-clockwise' })
+    expect(glyph).toHaveAttribute('aria-label', 'Turn counter-clockwise')
   })
 
   it('does not add empty parentheses for a rule without a note', () => {

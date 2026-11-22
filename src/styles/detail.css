@@ -300,3 +300,64 @@
     grid-template-rows: auto auto;
   }
 }
+
+/* Waypoint line and the per-card turn glyph -------------------------------- */
+
+.panel__waypoint {
+  margin: 0 0 4px;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+}
+
+.glyph {
+  margin: 10px 0 6px;
+  padding: 6px 8px 4px;
+  border: 1px solid #241f18;
+  border-radius: 4px;
+  background: #070606;
+}
+
+.glyph__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.glyph__entrance {
+  stroke: #6d6455;
+  stroke-width: 4;
+  stroke-dasharray: 6 6;
+}
+
+.glyph__route {
+  fill: none;
+  stroke: var(--highlight);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.glyph__head {
+  fill: var(--highlight);
+}
+
+.glyph__ring {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: #3d342a;
+  stroke-width: 2;
+  stroke-dasharray: 5 7;
+}
+
+.glyph__mark {
+  font-family: var(--display);
+  font-size: 40px;
+  fill: var(--muted);
+}
+
+.glyph__caption {
+  margin: 2px 0 0;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--muted);
+}

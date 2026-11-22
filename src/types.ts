@@ -39,6 +39,13 @@ export interface NavigationRule {
   note?: string
 }
 
+/** Where a level's waypoint sits, in the video's own terms. */
+export interface WaypointInfo {
+  where: string
+  /** True when the game places it somewhere different each time. */
+  random?: boolean
+}
+
 export interface Area {
   id: string
   /** Title shown in the detail panel, for example "Jail - Level 2". */
@@ -55,6 +62,8 @@ export interface Area {
   optional?: boolean
   features: string[]
   entrance: string[]
+  /** Absent means the level has no waypoint. */
+  waypoint?: WaypointInfo
   exit: string[]
   rules: NavigationRule[]
   /** Everything worth knowing that is not a feature, entrance or exit. */

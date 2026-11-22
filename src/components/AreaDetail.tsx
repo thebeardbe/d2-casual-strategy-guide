@@ -1,6 +1,7 @@
 import type { Act, Area } from '../types'
 import { areaFill, areaMapTypeLabel, areaMapTypes, mapTypeColor, mapTypeHint, mapTypeLabel } from '../data/mapTypes'
 import { Flowchart } from './Flowchart'
+import { DirectionGlyph } from './DirectionGlyph'
 import { NavigationRule } from './NavigationRule'
 
 interface AreaDetailProps {
@@ -27,6 +28,10 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
             {area.name}
           </h1>
           <p className="panel__type">Type: {areaMapTypeLabel(area)}</p>
+          <p className="panel__waypoint">
+            Waypoint: {area.waypoint ? area.waypoint.where : 'none in this level'}
+          </p>
+          <DirectionGlyph turn={area.rules[0]?.turn ?? 'random'} size={128} />
           <ul className="panel__types">
             {areaMapTypes(area).map((key) => (
               <li key={key} className="panel__type-hint">
@@ -40,12 +45,7 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
           <Section title="Entrance:" items={area.entrance} />
           <Section title={area.exit.length > 1 ? 'Exits:' : 'Exit:'} items={area.exit} />
           {area.notes && <Section title="Good to know:" items={area.notes} />}
-          {area.rules.length > 0 && (
-            <Section
-              title="Navigation:"
-              items={area.rules.map((rule) => describeRule(rule))}
-            />
-          )}
+          {area.rules.length > 0 && <Section title="Navigation:" items={describeRules(area.rules)} />}
         </div>
       </aside>
 
@@ -95,18 +95,30 @@ function Section({ title, items }: SectionProps) {
   )
 }
 
-function describeRule(rule: Area['rules'][number]): string {
-  const turns: Record<string, string> = {
-    'counter-clockwise': 'turn 90\u00b0 counter-clockwise',
-    clockwise: 'turn 90\u00b0 clockwise',
-    straight: 'go straight',
-    fixed: 'same layout every time',
-    alternating: 'one of a few fixed layouts',
-    random: 'no reliable rule',
+const TURN_TEXT: Record<string, string> = {
+  'counter-clockwise': 'turn 90\u00b0 counter-clockwise',
+  clockwise: 'turn 90\u00b0 clockwise',
+  straight: 'go straight',
+  fixed: 'same layout every time',
+  alternating: 'one of a few fixed layouts',
+  random: 'no reliable rule',
+}
+
+/**
+ * Group rules by their starting point. Jail L1 is the reason this exists: the
+ * exit to Jail L2 is straight from the entrance but counter-clockwise from the
+ * waypoint, and a flat list reads like a contradiction.
+ */
+function describeRules(rules: Area['rules']): string[] {
+  const entrance: string[] = []
+  const waypoint: string[] = []
+  for (const rule of rules) {
+    const text = `${TURN_TEXT[rule.turn] ?? rule.turn}${rule.towards ? ` to ${rule.towards}` : ''}${rule.note ? ` (${rule.note})` : ''}`
+    if (rule.from === 'waypoint') waypoint.push(text)
+    else entrance.push(text)
   }
-  const parts = [turns[rule.turn] ?? rule.turn]
-  if (rule.towards) parts.push(`towards ${rule.towards}`)
-  if (rule.from) parts.push(`from the ${rule.from}`)
-  if (rule.note) parts.push(`(${rule.note})`)
-  return parts.join(' ')
+  const lines: string[] = []
+  if (entrance.length > 0) lines.push(`From the entrance: ${entrance.join(', or ')}`)
+  if (waypoint.length > 0) lines.push(`From the waypoint: ${waypoint.join(', or ')}`)
+  return lines
 }
