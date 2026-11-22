@@ -76,6 +76,17 @@ describe('AreaDetail', () => {
     expect(screen.getByText(`Waypoint: ${area.waypoint!.where}`)).toBeInTheDocument()
   })
 
+  it('shows the waypoint only once when the calculator is present (Jail L1)', () => {
+    const area = areaById('jail-1')
+    expect(area.waypoint).toBeDefined()
+    expect(area.rules).toHaveLength(4)
+    const { container } = renderDetail(area)
+
+    expect(screen.getByRole('heading', { name: 'Work out your exit' })).toBeInTheDocument()
+    const occurrences = (container.textContent ?? '').match(/Waypoint:/g) ?? []
+    expect(occurrences).toHaveLength(1)
+  })
+
   it('says there is no waypoint for an area without one', () => {
     const area = areaById('blood-moor')
     expect(area.waypoint).toBeUndefined()

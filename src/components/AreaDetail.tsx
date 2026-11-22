@@ -3,6 +3,8 @@ import { areaFill, areaMapTypeLabel, areaMapTypes, mapTypeColor, mapTypeHint, ma
 import { Flowchart } from './Flowchart'
 import { DirectionGlyph } from './DirectionGlyph'
 import { NavigationRule } from './NavigationRule'
+import { TurnCalculator } from './TurnCalculator'
+import { isDirectional } from '../lib/directions'
 
 interface AreaDetailProps {
   act: Act
@@ -92,6 +94,8 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
                 {area.mapType === 'alternating-fixed' ? ', and this is one of them' : ''}.
               </figcaption>
             </figure>
+          ) : isDirectional(area.rules[0]?.turn ?? 'random') ? (
+            <TurnCalculator key={area.id} area={area} />
           ) : (
             <NavigationRule area={area} />
           )}
