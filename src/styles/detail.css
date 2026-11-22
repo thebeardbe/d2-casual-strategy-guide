@@ -361,3 +361,23 @@
   text-align: center;
   color: var(--muted);
 }
+
+/* Fixed-layout options and the source link --------------------------------- */
+
+.example__variants {
+  margin: 6px 0 2px;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.example__variants strong {
+  color: #fff;
+}
+
+.panel__source {
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: var(--dim);
+}

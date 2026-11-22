@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Act, Area } from '../types'
+import type { Act, Area, MapTypeKey } from '../types'
 import { areasInOrder, availableActs } from './acts'
 import { act1 } from './act1'
 import palette from './mapTypes.json'
@@ -84,6 +84,22 @@ const ACT1_NECESSARY_ORDER = [
 function areaIds(areas: Area[]): string[] {
   return areas.map((area) => area.id)
 }
+
+/**
+ * Variable layouts must not carry a rendered example: one screenshot of a
+ * generated arrangement would read as if that arrangement were guaranteed.
+ */
+const VARIABLE_MAP_TYPES = new Set<MapTypeKey>([
+  'big-square',
+  'big-rectangle',
+  'counter-clockwise',
+  'clockwise',
+  'straight',
+  'random',
+])
+
+/** The map types a rendered example is meaningful for. */
+const EXAMPLE_MAP_TYPES = new Set<MapTypeKey>(['fixed', 'fixed-enough', 'alternating-fixed'])
 
 describe('areasInOrder (Act I)', () => {
   it('starts at the town area, the only area with no incoming connector', () => {
@@ -185,6 +201,7 @@ function makeSyntheticArea(id: string, row: number, column: number, optional = f
     entrance: ['entrance'],
     exit: ['exit'],
     rules: [{ turn: 'fixed' }],
+    videoTime: 600,
   }
 }
 
@@ -250,13 +267,17 @@ for (const act of availableActs) {
       for (const area of act.areas) {
         expect(area.name.trim(), `${area.id} name`).not.toBe('')
         expect(area.label.trim(), `${area.id} label`).not.toBe('')
-        expect(area.features.length, `${area.id} features`).toBeGreaterThan(0)
         expect(area.entrance.length, `${area.id} entrance`).toBeGreaterThan(0)
-        expect(area.exit.length, `${area.id} exit`).toBeGreaterThan(0)
         expect(area.rules.length, `${area.id} rules`).toBeGreaterThan(0)
-        for (const feature of area.features) expect(feature.trim()).not.toBe('')
-        for (const entrance of area.entrance) expect(entrance.trim()).not.toBe('')
-        for (const exit of area.exit) expect(exit.trim()).not.toBe('')
+        expect(Number.isInteger(area.videoTime), `${area.id} videoTime is an integer`).toBe(true)
+        expect(area.videoTime, `${area.id} videoTime is positive`).toBeGreaterThan(0)
+
+        // The video's own cards list no features or no exit for some levels
+        // (Jail L1 lists only a waypoint, Den of Evil has no exit), so both
+        // arrays may be empty. Any entry they do carry must still have text.
+        for (const feature of area.features) expect(feature.trim(), `${area.id} feature`).not.toBe('')
+        for (const entrance of area.entrance) expect(entrance.trim(), `${area.id} entrance`).not.toBe('')
+        for (const exit of area.exit) expect(exit.trim(), `${area.id} exit`).not.toBe('')
         for (const rule of area.rules) expect(rule.turn).toBeTruthy()
       }
     })
@@ -400,6 +421,42 @@ for (const act of availableActs) {
     it('does not reuse the same example image for two areas', () => {
       const examples = act.areas.flatMap((area) => (area.example ? [area.example] : []))
       expect(new Set(examples).size).toBe(examples.length)
+    })
+
+    it('never gives a variable layout an example picture', () => {
+      for (const area of act.areas) {
+        const variableTypes = areaMapTypes(area).filter((key) => VARIABLE_MAP_TYPES.has(key))
+        if (variableTypes.length === 0) continue
+        expect(
+          area.example,
+          `${area.id} is ${variableTypes.join(' + ')}, so it must not have an example`,
+        ).toBeUndefined()
+      }
+    })
+
+    it('only gives an example picture to a fixed, fixed-enough or alternating-fixed area', () => {
+      const withExample = act.areas.filter((area) => area.example)
+      expect(withExample.length, 'at least one area keeps an example').toBeGreaterThan(0)
+      for (const area of withExample) {
+        for (const key of areaMapTypes(area)) {
+          expect(EXAMPLE_MAP_TYPES.has(key), `${area.id} has an example but is ${key}`).toBe(true)
+        }
+      }
+    })
+  })
+
+  describe(`${actLabel} layout variants`, () => {
+    it('lists at least two fully described layouts when an area carries variants', () => {
+      const withVariants = act.areas.filter((area) => area.variants)
+      expect(withVariants.length, 'at least one area carries variants').toBeGreaterThan(0)
+
+      for (const area of withVariants) {
+        expect(area.variants!.length, `${area.id} variant count`).toBeGreaterThanOrEqual(2)
+        for (const variant of area.variants!) {
+          expect(variant.label.trim(), `${area.id} variant label`).not.toBe('')
+          expect(variant.detail.trim(), `${area.id} variant detail`).not.toBe('')
+        }
+      }
     })
   })
 }

@@ -119,14 +119,79 @@ describe('AreaDetail', () => {
     expect(screen.queryByRole('heading', { name: 'Exit:' })).toBeNull()
   })
 
+  it('omits the Features section when the card lists no features', () => {
+    const area = areaById('jail-1')
+    expect(area.features).toHaveLength(0)
+    renderDetail(area)
+
+    expect(screen.queryByRole('heading', { name: 'Features:' })).toBeNull()
+  })
+
+  it('omits the Exit section when the card lists no exit', () => {
+    const area = areaById('den-of-evil')
+    expect(area.exit).toHaveLength(0)
+    renderDetail(area)
+
+    expect(screen.queryByRole('heading', { name: 'Exit:' })).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Exits:' })).toBeNull()
+  })
+
   it('renders the example image when the area has one', () => {
-    const area = areaById('jail-2')
+    const area = areaById('cave-2')
+    expect(area.example).toBeDefined()
     renderDetail(area)
 
     const image = screen.getByRole('img', { name: `Example layout of ${area.name}` })
     expect(image.tagName).toBe('IMG')
     expect(image).toHaveAttribute('src', area.example)
     expect(screen.queryByRole('heading', { name: 'How to navigate' })).toBeNull()
+  })
+
+  it('lists the fixed layouts under the example image when an area has both', () => {
+    const area = areaById('monastery-gate-outer-cloister')
+    expect(area.example).toBeDefined()
+    expect(area.variants).toHaveLength(3)
+    const { container } = renderDetail(area)
+
+    expect(screen.getByRole('img', { name: `Example layout of ${area.name}` })).toBeInTheDocument()
+
+    const variants = container.querySelectorAll('.example__variants li')
+    expect(variants).toHaveLength(3)
+    const text = [...variants].map((variant) => variant.textContent ?? '').join(' | ')
+    expect(text).toContain('Barracks are upper-right')
+    expect(text).toContain('Barracks are upper-left')
+    expect(text).toContain('Barracks are lower-right')
+
+    // With an image the layouts belong under it, not in a separate panel section.
+    expect(screen.queryByRole('heading', { name: 'The layouts:' })).toBeNull()
+  })
+
+  it('renders a "The layouts:" section when an area has variants but no example', () => {
+    // No Act I area currently has variants without an example, so drop the
+    // example from one that does to exercise the fallback branch.
+    const area = { ...areaById('monastery-gate-outer-cloister'), example: undefined }
+    expect(area.example).toBeUndefined()
+    renderDetail(area)
+
+    const heading = screen.getByRole('heading', { name: 'The layouts:' })
+    const section = heading.closest('section')
+    expect(section).not.toBeNull()
+
+    const items = within(section as HTMLElement).getAllByRole('listitem')
+    expect(items).toHaveLength(3)
+    expect(items[0]).toHaveTextContent('Barracks are upper-right')
+    expect(items[1]).toHaveTextContent('Barracks are upper-left')
+    expect(items[2]).toHaveTextContent('Barracks are lower-right')
+    expect(screen.queryByAltText(`Example layout of ${area.name}`)).toBeNull()
+  })
+
+  it('links every card to the video at its videoTime', () => {
+    for (const area of act1.areas) {
+      const { unmount } = renderDetail(area)
+      const link = screen.getByRole('link', { name: /Watch this map in the video/ })
+      expect(link.getAttribute('href'), `${area.id} video link`).toContain(`&t=${area.videoTime}s`)
+      unmount()
+    }
   })
 
   it('falls back to the navigation diagram when the area has no example', () => {

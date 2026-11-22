@@ -45,7 +45,22 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
           <Section title="Entrance:" items={area.entrance} />
           <Section title={area.exit.length > 1 ? 'Exits:' : 'Exit:'} items={area.exit} />
           {area.notes && <Section title="Good to know:" items={area.notes} />}
+          {area.variants && !area.example && (
+            <Section
+              title="The layouts:"
+              items={area.variants.map((variant) => `${variant.label}: ${variant.detail}`)}
+            />
+          )}
           {area.rules.length > 0 && <Section title="Navigation:" items={describeRules(area.rules)} />}
+          <p className="panel__source">
+            <a
+              href={`https://www.youtube.com/watch?v=J1EFUYGk4CA&t=${area.videoTime}s`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Watch this map in the video at {formatTime(area.videoTime)}
+            </a>
+          </p>
         </div>
       </aside>
 
@@ -62,9 +77,19 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
                 alt={`Example layout of ${area.name}`}
                 loading="lazy"
               />
+              {area.variants && (
+                <ul className="example__variants">
+                  {area.variants.map((variant) => (
+                    <li key={variant.label}>
+                      <strong>{variant.label}</strong>: {variant.detail}
+                    </li>
+                  ))}
+                </ul>
+              )}
               <figcaption className="example__caption">
-                Example layout captured from the video. Layouts are randomised, so this is one
-                possible version, and some levels change size with difficulty.
+                Layout captured from the video. This level always generates the same way
+                {area.variants ? ', in one of the shapes listed above' : ''}
+                {area.mapType === 'alternating-fixed' ? ', and this is one of them' : ''}.
               </figcaption>
             </figure>
           ) : (
@@ -93,6 +118,11 @@ function Section({ title, items }: SectionProps) {
       </ul>
     </section>
   )
+}
+
+function formatTime(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  return `${minutes}:${String(seconds % 60).padStart(2, '0')}`
 }
 
 const TURN_TEXT: Record<string, string> = {

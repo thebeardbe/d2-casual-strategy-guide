@@ -136,13 +136,13 @@
       "yellow": 441
     },
     "monastery-gate-outer-cloister": {
-      "second": 960,
+      "second": 948,
       "type": "Alternating Fixed",
       "expected": "Alternating Fixed",
-      "confidence": "high",
-      "black": 0.83,
+      "confidence": "forced",
+      "black": 0.62,
       "hud": 0.0,
-      "yellow": 1586
+      "yellow": 0
     },
     "pit-1": {
       "second": 977,

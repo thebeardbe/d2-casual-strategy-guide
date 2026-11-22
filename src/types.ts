@@ -66,8 +66,12 @@ export interface Area {
   waypoint?: WaypointInfo
   exit: string[]
   rules: NavigationRule[]
+  /** The fixed layouts a level can take, for fixed and alternating fixed maps. */
+  variants?: { label: string; detail: string }[]
   /** Everything worth knowing that is not a feature, entrance or exit. */
   notes?: string[]
+  /** Second in the source video where this area is explained. */
+  videoTime: number
   /** Path under /examples, relative to the site root. */
   example?: string
 }
