@@ -39,6 +39,14 @@ export interface NavigationRule {
   note?: string
 }
 
+/** Area level per difficulty, from the D2R levels table. */
+export interface AreaLevels {
+  label?: string
+  normal: number
+  nightmare: number
+  hell: number
+}
+
 /** Where a level's waypoint sits, in the video's own terms. */
 export interface WaypointInfo {
   where: string
@@ -64,6 +72,11 @@ export interface Area {
   entrance: string[]
   /** Absent means the level has no waypoint. */
   waypoint?: WaypointInfo
+  /**
+   * Area levels (alvl) per difficulty. Towns and the Forgotten Tower entry have
+   * no monsters, so they carry none. Levels grouped on one card list each.
+   */
+  areaLevels?: AreaLevels[]
   exit: string[]
   rules: NavigationRule[]
   /** The fixed layouts a level can take, for fixed and alternating fixed maps. */

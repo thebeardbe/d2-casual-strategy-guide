@@ -214,6 +214,41 @@ describe('AreaDetail', () => {
     expect(screen.queryByAltText(`Example layout of ${area.name}`)).toBeNull()
   })
 
+  it('renders both the rule diagram and the compass calculator for a directional area', () => {
+    const area = areaById('jail-2')
+    expect(area.rules[0].turn).toBe('straight')
+    expect(area.example).toBeUndefined()
+    const { container } = renderDetail(area)
+
+    expect(screen.getByRole('heading', { name: 'How to navigate' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Work out your exit' })).toBeInTheDocument()
+
+    const exampleSections = Array.from(container.querySelectorAll('.detail__example h2'))
+    expect(exampleSections.map((heading) => heading.textContent)).toEqual([
+      'How to navigate',
+      'Work out your exit',
+    ])
+  })
+
+  it('renders the rule diagram but no compass calculator for a fixed area', () => {
+    const area = areaById('inner-cloister')
+    expect(area.rules[0].turn).toBe('fixed')
+    expect(area.example).toBeUndefined()
+    renderDetail(area)
+
+    expect(screen.getByRole('heading', { name: 'How to navigate' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Work out your exit' })).toBeNull()
+  })
+
+  it('shows the area level badges on a card that has area levels', () => {
+    renderDetail(areaById('cathedral'))
+
+    expect(screen.getByText('Area level')).toBeInTheDocument()
+    expect(screen.getByText('Normal')).toBeInTheDocument()
+    expect(screen.getByText('Nightmare')).toBeInTheDocument()
+    expect(screen.getByText('Hell')).toBeInTheDocument()
+  })
+
   it('calls onClose from the close button', () => {
     const { onClose } = renderDetail(areaById('jail-2'))
 

@@ -1,6 +1,7 @@
 import type { Act, Area } from '../types'
 import { areaFill, areaMapTypeLabel, areaMapTypes, mapTypeColor, mapTypeHint, mapTypeLabel } from '../data/mapTypes'
 import { Flowchart } from './Flowchart'
+import { AreaLevelBadges } from './AreaLevelBadges'
 import { DirectionGlyph } from './DirectionGlyph'
 import { NavigationRule } from './NavigationRule'
 import { TurnCalculator } from './TurnCalculator'
@@ -34,6 +35,7 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
             Waypoint: {area.waypoint ? area.waypoint.where : 'none in this level'}
           </p>
           <DirectionGlyph turn={glyphTurn(area)} size={128} />
+          <AreaLevelBadges area={area} />
           <ul className="panel__types">
             {areaMapTypes(area).map((key) => (
               <li key={key} className="panel__type-hint">
@@ -94,10 +96,13 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
                 {area.mapType === 'alternating-fixed' ? ', and this is one of them' : ''}.
               </figcaption>
             </figure>
-          ) : isDirectional(area.rules[0]?.turn ?? 'random') ? (
-            <TurnCalculator key={area.id} area={area} />
           ) : (
-            <NavigationRule area={area} />
+            <>
+              <NavigationRule area={area} />
+              {isDirectional(area.rules[0]?.turn ?? 'random') && (
+                <TurnCalculator key={area.id} area={area} />
+              )}
+            </>
           )}
         </div>
       </section>

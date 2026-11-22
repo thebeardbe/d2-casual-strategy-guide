@@ -441,6 +441,98 @@
   height: auto;
 }
 
+.turn__ring {
+  fill: none;
+  stroke: #1d1913;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 8;
+}
+
+.turn__origin {
+  fill: #3d342a;
+}
+
+.turn__target circle {
+  fill: #0d0b09;
+  stroke: #2a241c;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+.turn__target text {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--muted);
+  pointer-events: none;
+}
+
+.turn__target:hover circle {
+  stroke: var(--muted);
+}
+
+.turn__target--active circle {
+  stroke: var(--highlight);
+  stroke-width: 2;
+  fill: #0f1a1e;
+}
+
+.turn__target--active text {
+  fill: var(--highlight);
+}
+
+.turn__legend {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.turn__legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.turn__swatch {
+  display: inline-block;
+  width: 22px;
+  height: 0;
+  border-top: 4px solid #8d8577;
+}
+
+.turn__swatch--entry {
+  border-top-style: dashed;
+}
+
+.turn__swatch--exit {
+  border-top-color: var(--highlight);
+}
+
+.turn__arrow--entry text {
+  fill: #b3ab9d;
+  font-size: 10px;
+}
+
+.turn__arrow--exit text {
+  fill: var(--highlight);
+  font-size: 10px;
+}
+
+.turn__answer--exit strong {
+  color: var(--highlight);
+}
+
+.turn__how {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
 .turn__grid {
   fill: none;
   stroke: #1d1913;
@@ -545,4 +637,158 @@
   .turn__body {
     grid-template-columns: 1fr;
   }
+}
+
+/* Area level badges -------------------------------------------------------- */
+
+.levels {
+  margin: 12px 0 4px;
+}
+
+.levels__title {
+  margin: 0 0 4px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+}
+
+.levels__grid {
+  display: grid;
+  gap: 4px;
+}
+
+.levels__head,
+.levels__row {
+  display: grid;
+  grid-template-columns: 92px repeat(3, 50px);
+  gap: 4px;
+  align-items: center;
+}
+
+.levels__column {
+  font-size: 10px;
+  color: var(--dim);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.levels__label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.levels__badge {
+  display: block;
+  justify-self: center;
+  min-width: 34px;
+  padding: 2px 7px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  color: #fff;
+  border-radius: 3px;
+  cursor: help;
+}
+
+.levels__badge--normal {
+  background: #2e4652;
+  border: 1px solid #47687a;
+}
+
+.levels__badge--nightmare {
+  background: #4a2a5c;
+  border: 1px solid #72438c;
+}
+
+.levels__badge--hell {
+  background: #5d1a14;
+  border: 1px solid #8d2f22;
+}
+
+.levels__hint {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--dim);
+}
+
+
+
+/* Guide page --------------------------------------------------------------- */
+
+.guide {
+  max-width: 78ch;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+}
+
+.guide__title {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: clamp(26px, 3.4vw, 44px);
+  color: #fff;
+}
+
+.guide__lede {
+  margin: 0 0 8px;
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.guide__section {
+  margin-top: 26px;
+}
+
+.guide__section h2 {
+  margin: 0 0 6px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 21px;
+  color: #fff;
+}
+
+.guide__section p {
+  margin: 0 0 8px;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.guide__list {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  font-size: 16.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.guide__list li + li {
+  margin-top: 4px;
+}
+
+.guide__source {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.guide__back {
+  margin-top: 28px;
+  padding: 9px 16px;
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: #0d0b09;
+  border: 1px solid #3d342a;
+  border-radius: 3px;
+}
+
+.guide__back:hover {
+  border-color: var(--gold);
 }

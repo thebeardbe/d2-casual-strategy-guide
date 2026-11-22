@@ -113,6 +113,64 @@ describe('App', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jail - Level 1')
   })
 
+  describe('guide route', () => {
+    it('shows the guide when the initial hash is #/guide', () => {
+      window.location.hash = '#/guide'
+      render(<App />)
+
+      expect(screen.getByRole('heading', { level: 1, name: 'How to read a map' })).toBeInTheDocument()
+      expect(screen.queryByRole('group', { name: 'Act I map chart' })).not.toBeInTheDocument()
+    })
+
+    it('switches to the guide when the header button is clicked', () => {
+      render(<App />)
+
+      fireEvent.click(screen.getByRole('button', { name: 'How to read a map' }))
+
+      expect(window.location.hash).toBe('#/guide')
+      expect(screen.getByRole('heading', { level: 1, name: 'How to read a map' })).toBeInTheDocument()
+      expect(screen.queryByRole('group', { name: 'Act I map chart' })).not.toBeInTheDocument()
+    })
+
+    it('returns to the chart from the guide with Escape', () => {
+      window.location.hash = '#/guide'
+      render(<App />)
+
+      fireEvent.keyDown(window, { key: 'Escape' })
+
+      expect(window.location.hash).toBe('#/act/1')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Act I')
+      expect(screen.getByRole('group', { name: 'Act I map chart' })).toBeInTheDocument()
+    })
+
+    it('returns to the chart from the guide with the back button', () => {
+      window.location.hash = '#/guide'
+      render(<App />)
+
+      fireEvent.click(screen.getByRole('button', { name: 'Back to the chart' }))
+
+      expect(window.location.hash).toBe('#/act/1')
+      expect(screen.getByRole('group', { name: 'Act I map chart' })).toBeInTheDocument()
+    })
+
+    it('links to the video moments that explain the hallway and the categories', () => {
+      window.location.hash = '#/guide'
+      render(<App />)
+
+      const hallway = screen.getByRole('link', { name: /2:27/ })
+      expect(hallway).toHaveAttribute(
+        'href',
+        'https://www.youtube.com/watch?v=J1EFUYGk4CA&t=147s',
+      )
+
+      const categories = screen.getByRole('link', { name: /5:43/ })
+      expect(categories).toHaveAttribute(
+        'href',
+        'https://www.youtube.com/watch?v=J1EFUYGk4CA&t=343s',
+      )
+    })
+  })
+
   describe('modifier keys', () => {
     const modifiers = [
       ['altKey', 'Alt'],

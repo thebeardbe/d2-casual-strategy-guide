@@ -80,7 +80,7 @@ button {
 
 .tabs {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto auto 1fr;
   align-items: center;
   gap: 16px;
   padding: 14px 24px 12px;
@@ -136,6 +136,29 @@ button {
   cursor: not-allowed;
 }
 
+.tabs__guide {
+  appearance: none;
+  padding: 6px 12px;
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: none;
+  border: 1px solid #2a241c;
+  border-radius: 3px;
+}
+
+.tabs__guide:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.tabs__guide--active {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
 .tabs__credit {
   margin: 0;
   justify-self: end;
@@ -172,7 +195,30 @@ button {
     row-gap: 6px;
   }
 
-  .tabs__credit {
+  .tabs__guide {
+  appearance: none;
+  padding: 6px 12px;
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: none;
+  border: 1px solid #2a241c;
+  border-radius: 3px;
+}
+
+.tabs__guide:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.tabs__guide--active {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.tabs__credit {
     justify-self: center;
   }
 

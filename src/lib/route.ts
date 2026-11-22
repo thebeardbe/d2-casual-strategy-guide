@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export interface Route {
-  act: number
-  areaId?: string
-}
+export type Route =
+  | { kind: 'act'; act: number; areaId?: string }
+  | { kind: 'guide' }
 
-export const DEFAULT_ROUTE: Route = { act: 1 }
+export const DEFAULT_ROUTE: Route = { kind: 'act', act: 1 }
 
 /**
  * Parse `#/act/1` or `#/act/1/jail-2`. Anything unparseable falls back to the
@@ -13,14 +12,16 @@ export const DEFAULT_ROUTE: Route = { act: 1 }
  */
 export function parseRoute(hash: string): Route {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)
+  if (parts[0] === 'guide') return { kind: 'guide' }
   if (parts[0] !== 'act') return DEFAULT_ROUTE
   const act = Number(parts[1])
   if (!Number.isInteger(act) || act < 1) return DEFAULT_ROUTE
   const areaId = parts[2]
-  return areaId ? { act, areaId } : { act }
+  return areaId ? { kind: 'act', act, areaId } : { kind: 'act', act }
 }
 
 export function routeToHash(route: Route): string {
+  if (route.kind === 'guide') return '#/guide'
   return route.areaId ? `#/act/${route.act}/${route.areaId}` : `#/act/${route.act}`
 }
 

@@ -4,7 +4,7 @@ import {
   DIRECTIONS,
   DIRECTION_LABELS,
   DIRECTION_SHORT,
-  DIRECTION_VECTORS,
+  directionVector,
   isDirectional,
   rotate,
   turnPhrase,
@@ -15,15 +15,18 @@ interface TurnCalculatorProps {
   area: Area
 }
 
-const CENTRE = 110
-const ENTRY_LENGTH = 44
-const EXIT_LENGTH = 82
-const HEAD = 13
+const CENTRE = 130
+const RING_RADIUS = 104
+const TARGET_RADIUS = 82
+const ENTRY_LENGTH = 50
+const EXIT_LENGTH = 78
+const HEAD = 15
 
 /**
  * Pick the direction your entrance hallway runs and see which way the exit runs.
  * This is the video's core rule made interactive: the exit is the entrance
- * hallway rotated by 90 degrees, clockwise or counter-clockwise.
+ * hallway rotated by 90 degrees, clockwise or counter-clockwise. Nothing has to
+ * be picked to use it: the rule is already spelled out above the compass.
  */
 export function TurnCalculator({ area }: TurnCalculatorProps) {
   const rules = area.rules.filter((rule) => isDirectional(rule.turn))
@@ -33,14 +36,32 @@ export function TurnCalculator({ area }: TurnCalculatorProps) {
   if (rules.length === 0) return null
   const rule: NavigationRule = rules[Math.min(ruleIndex, rules.length - 1)]
   const exit = entry ? rotate(entry, rule.turn) : null
+  // Catacombs L2 measures from the waypoint: there is no reliable entrance read,
+  // so the hallway to look at is the one leading away from the waypoint.
+  const origin = rule.from === 'waypoint' ? 'waypoint' : 'entrance'
+
+  const pick = (direction: Direction) => {
+    setEntry((current) => (current === direction ? null : direction))
+  }
 
   return (
     <div className="turn">
-      <h2 className="turn__heading">Work out your exit</h2>
-      <p className="turn__intro">
-        Look at the entrance tile, not at the stairs or your character: which way does the
-        hallway it opens into run?
-      </p>
+      <div className="turn__head">
+        <h2 className="turn__heading">Work out your exit</h2>
+        <p className="turn__intro">
+          {origin === 'waypoint' ? (
+            <>
+              This level is read from the waypoint, not the entrance. Which way does the hallway
+              leaving the waypoint run? Click that direction on the compass.
+            </>
+          ) : (
+            <>
+              Look at the entrance tile, not at the stairs or your character: which way does the
+              hallway it opens into run? Click that direction on the compass.
+            </>
+          )}
+        </p>
+      </div>
 
       {rules.length > 1 && (
         <div className="turn__rules" role="group" aria-label="Which exit">
@@ -59,65 +80,87 @@ export function TurnCalculator({ area }: TurnCalculatorProps) {
       )}
 
       <div className="turn__body">
-        <svg className="turn__svg" viewBox="0 0 220 220" role="img" aria-label={describe(area, entry, exit)}>
-          <circle className="turn__grid" cx={CENTRE} cy={CENTRE} r={96} />
+        <svg
+          className="turn__svg"
+          viewBox="0 0 260 260"
+          role="img"
+          aria-label={describe(area, origin, entry, exit)}
+        >
+          <circle className="turn__ring" cx={CENTRE} cy={CENTRE} r={RING_RADIUS} />
+
           {DIRECTIONS.map((direction) => {
-            const vector = DIRECTION_VECTORS[direction]
+            const vector = directionVector(direction)
+            const active = entry === direction
             return (
-              <line
+              <g
                 key={direction}
-                className="turn__spoke"
-                x1={CENTRE + vector.x * 22}
-                y1={CENTRE + vector.y * 22}
-                x2={CENTRE + vector.x * 96}
-                y2={CENTRE + vector.y * 96}
-              />
+                className={`turn__target${active ? ' turn__target--active' : ''}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`Entrance runs ${DIRECTION_LABELS[direction]}`}
+                aria-pressed={active}
+                onClick={() => pick(direction)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    pick(direction)
+                  }
+                }}
+              >
+                <circle
+                  cx={CENTRE + vector.x * TARGET_RADIUS}
+                  cy={CENTRE + vector.y * TARGET_RADIUS}
+                  r={17}
+                />
+                <text
+                  x={CENTRE + vector.x * TARGET_RADIUS}
+                  y={CENTRE + vector.y * TARGET_RADIUS + 5}
+                  textAnchor="middle"
+                >
+                  {DIRECTION_SHORT[direction]}
+                </text>
+              </g>
             )
           })}
-          <text className="turn__compass" x={CENTRE} y={16} textAnchor="middle">N</text>
-          <text className="turn__compass" x={210} y={CENTRE + 4} textAnchor="middle">E</text>
-          <text className="turn__compass" x={CENTRE} y={214} textAnchor="middle">S</text>
-          <text className="turn__compass" x={10} y={CENTRE + 4} textAnchor="middle">W</text>
+
+          <circle className="turn__origin" cx={CENTRE} cy={CENTRE} r={5} />
 
           {entry && (
-            <Arrow direction={entry} length={ENTRY_LENGTH} className="turn__arrow--entry" label="in" />
+            <Arrow direction={entry} length={ENTRY_LENGTH} kind="entry" label="ENTRANCE" />
           )}
-          {exit && (
-            <Arrow direction={exit} length={EXIT_LENGTH} className="turn__arrow--exit" label="out" />
-          )}
+          {exit && <Arrow direction={exit} length={EXIT_LENGTH} kind="exit" label="EXIT" />}
         </svg>
 
         <div className="turn__panel">
-          <p className="turn__prompt">{entry ? `${turnPhrase(rule.turn)} from there:` : 'Pick your entrance direction:'}</p>
-          <div className="turn__picks" role="group" aria-label="Entrance hallway direction">
-            {DIRECTIONS.map((direction) => (
-              <button
-                key={direction}
-                type="button"
-                className={`turn__pick${entry === direction ? ' turn__pick--active' : ''}`}
-                aria-pressed={entry === direction}
-                title={DIRECTION_LABELS[direction]}
-                onClick={() => setEntry(direction)}
-              >
-                {DIRECTION_SHORT[direction]}
-              </button>
-            ))}
-          </div>
+          <ul className="turn__legend">
+            <li>
+              <span className="turn__swatch turn__swatch--entry" /> entrance hallway
+            </li>
+            <li>
+              <span className="turn__swatch turn__swatch--exit" /> exit hallway
+            </li>
+          </ul>
 
           {entry && exit ? (
-            <p className="turn__answer">
-              Entrance runs <strong>{DIRECTION_LABELS[entry]}</strong>. The exit runs{' '}
-              <strong>{DIRECTION_LABELS[exit]}</strong>.
-            </p>
+            <>
+              <p className="turn__answer">
+                Entrance runs <strong>{DIRECTION_LABELS[entry]}</strong>.
+              </p>
+              <p className="turn__answer turn__answer--exit">
+                The exit runs <strong>{DIRECTION_LABELS[exit]}</strong>.
+              </p>
+              <p className="turn__how">
+                {turnPhrase(rule.turn)}, measured from the {origin} hallway.
+              </p>
+            </>
           ) : (
             <p className="turn__answer turn__answer--empty">
-              Pick the direction the entrance hallway points. If it is not clear, you can walk a few
-              steps in and look again.
+              Click the compass direction your entrance hallway points. If it is not obvious yet,
+              walk a few steps in and look again.
             </p>
           )}
         </div>
       </div>
-
     </div>
   )
 }
@@ -125,29 +168,34 @@ export function TurnCalculator({ area }: TurnCalculatorProps) {
 interface ArrowProps {
   direction: Direction
   length: number
-  className: string
+  kind: 'entry' | 'exit'
   label: string
 }
 
-function Arrow({ direction, length, className, label }: ArrowProps) {
-  const vector = DIRECTION_VECTORS[direction]
+function Arrow({ direction, length, kind, label }: ArrowProps) {
+  const vector = directionVector(direction)
   const tipX = CENTRE + vector.x * length
   const tipY = CENTRE + vector.y * length
   const perpendicular = { x: -vector.y, y: vector.x }
   const baseX = tipX - vector.x * HEAD
   const baseY = tipY - vector.y * HEAD
+  const spread = kind === 'exit' ? 10 : 7
+  // Labels sit off to one side so the two arrows never bury each other.
+  const side = kind === 'exit' ? -1 : 1
+  const labelX = tipX + perpendicular.x * 30 * side + vector.x * 10
+  const labelY = tipY + perpendicular.y * 30 * side + vector.y * 10 + 4
 
   return (
-    <g className={`turn__arrow ${className}`}>
+    <g className={`turn__arrow turn__arrow--${kind}`}>
       <line x1={CENTRE} y1={CENTRE} x2={baseX} y2={baseY} />
       <polygon
         points={[
           `${tipX},${tipY}`,
-          `${baseX + perpendicular.x * 8},${baseY + perpendicular.y * 8}`,
-          `${baseX - perpendicular.x * 8},${baseY - perpendicular.y * 8}`,
+          `${baseX + perpendicular.x * spread},${baseY + perpendicular.y * spread}`,
+          `${baseX - perpendicular.x * spread},${baseY - perpendicular.y * spread}`,
         ].join(' ')}
       />
-      <text x={tipX + vector.x * 16} y={tipY + vector.y * 16 + 4} textAnchor="middle">
+      <text x={labelX} y={labelY} textAnchor="middle">
         {label}
       </text>
     </g>
@@ -163,7 +211,12 @@ function ruleLabel(rule: NavigationRule, index: number): string {
   return rule.from ? `${rule.towards} (from the ${rule.from})` : rule.towards
 }
 
-function describe(area: Area, entry: Direction | null, exit: Direction | null): string {
+function describe(
+  area: Area,
+  origin: 'entrance' | 'waypoint',
+  entry: Direction | null,
+  exit: Direction | null,
+): string {
   if (!entry || !exit) return `Work out the exit direction for ${area.name}`
-  return `Entrance runs ${DIRECTION_LABELS[entry]}, exit runs ${DIRECTION_LABELS[exit]}`
+  return `The ${origin} hallway runs ${DIRECTION_LABELS[entry]}, the exit runs ${DIRECTION_LABELS[exit]}`
 }

@@ -1,35 +1,51 @@
 import type { Turn } from '../types'
 
 /**
- * Isometric hallways in Diablo II run along the four diagonals, so the entrance
- * tile can only point one of these four ways. Listed in counter-clockwise order,
- * which makes the rotation maths a step along the list.
+ * Compass bearings in degrees, 0 = north, 90 = east. Rotating 90 degrees
+ * counter-clockwise subtracts from the bearing, clockwise adds, which keeps the
+ * maths honest for all eight directions instead of relying on list order.
  */
-export const DIRECTIONS = ['NE', 'NW', 'SW', 'SE'] as const
+export type Direction = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
 
-export type Direction = (typeof DIRECTIONS)[number]
+export const BEARINGS: Record<Direction, number> = {
+  N: 0,
+  NE: 45,
+  E: 90,
+  SE: 135,
+  S: 180,
+  SW: 225,
+  W: 270,
+  NW: 315,
+}
+
+export const DIRECTIONS = Object.keys(BEARINGS) as Direction[]
 
 export const DIRECTION_LABELS: Record<Direction, string> = {
+  N: 'north (up)',
   NE: 'north-east (up-right)',
-  NW: 'north-west (up-left)',
-  SW: 'south-west (down-left)',
+  E: 'east (right)',
   SE: 'south-east (down-right)',
+  S: 'south (down)',
+  SW: 'south-west (down-left)',
+  W: 'west (left)',
+  NW: 'north-west (up-left)',
 }
 
-/** Short label for a button. */
 export const DIRECTION_SHORT: Record<Direction, string> = {
+  N: 'N',
   NE: 'NE',
-  NW: 'NW',
-  SW: 'SW',
+  E: 'E',
   SE: 'SE',
+  S: 'S',
+  SW: 'SW',
+  W: 'W',
+  NW: 'NW',
 }
 
-/** Unit vector for drawing, screen coordinates (y grows downwards). */
-export const DIRECTION_VECTORS: Record<Direction, { x: number; y: number }> = {
-  NE: { x: 1, y: -1 },
-  NW: { x: -1, y: -1 },
-  SW: { x: -1, y: 1 },
-  SE: { x: 1, y: 1 },
+/** Unit vector for drawing, in screen coordinates (y grows downwards). */
+export function directionVector(direction: Direction): { x: number; y: number } {
+  const radians = ((BEARINGS[direction] - 90) * Math.PI) / 180
+  return { x: Math.cos(radians), y: Math.sin(radians) }
 }
 
 /** True when a rule can be turned into a direction answer. */
@@ -42,18 +58,15 @@ export function isDirectional(turn: Turn): boolean {
  * Counter-clockwise is a visual left turn: south-east becomes north-east.
  */
 export function rotate(entry: Direction, turn: Turn): Direction | null {
-  const index = DIRECTIONS.indexOf(entry)
-  if (index < 0) return null
-  switch (turn) {
-    case 'counter-clockwise':
-      return DIRECTIONS[(index + 1) % DIRECTIONS.length]
-    case 'clockwise':
-      return DIRECTIONS[(index - 1 + DIRECTIONS.length) % DIRECTIONS.length]
-    case 'straight':
-      return entry
-    default:
-      return null
+  if (!isDirectional(turn)) return null
+  const delta = turn === 'counter-clockwise' ? -90 : turn === 'clockwise' ? 90 : 0
+  const bearing = (((BEARINGS[entry] + delta) % 360) + 360) % 360
+  const match = DIRECTIONS.find((direction) => BEARINGS[direction] === bearing)
+  if (!match) {
+    console.warn(`No compass direction for bearing ${bearing}; the turn is not a multiple of 45 degrees.`)
+    return null
   }
+  return match as Direction
 }
 
 /** "turn 90° counter-clockwise (left)" and friends. */

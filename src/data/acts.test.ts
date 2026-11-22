@@ -460,3 +460,40 @@ for (const act of availableActs) {
     })
   })
 }
+
+describe('Act I area levels', () => {
+  const withLevels = act1.areas.filter((area) => area.areaLevels)
+
+  it('gives every listed entry three positive integers', () => {
+    expect(withLevels.length, 'Act I has areas with area levels').toBeGreaterThan(0)
+
+    for (const area of withLevels) {
+      expect(area.areaLevels!.length, `${area.id} level entries`).toBeGreaterThan(0)
+      for (const entry of area.areaLevels!) {
+        for (const difficulty of ['normal', 'nightmare', 'hell'] as const) {
+          const level = entry[difficulty]
+          expect(Number.isInteger(level), `${area.id} ${difficulty} is an integer`).toBe(true)
+          expect(level, `${area.id} ${difficulty} is positive`).toBeGreaterThan(0)
+        }
+      }
+    }
+  })
+
+  it('labels each entry when an area is split into several rows', () => {
+    for (const area of withLevels) {
+      const entries = area.areaLevels!
+      if (entries.length < 2) continue
+      const labels = entries.map((entry) => entry.label ?? '')
+      for (const label of labels) {
+        expect(label.trim(), `${area.id} row label`).not.toBe('')
+      }
+      expect(new Set(labels).size, `${area.id} row labels are unique`).toBe(labels.length)
+    }
+  })
+
+  it('leaves Rogue Encampment and Forgotten Tower without area levels', () => {
+    const byId = new Map(act1.areas.map((area) => [area.id, area]))
+    expect(byId.get('rogue-encampment')!.areaLevels).toBeUndefined()
+    expect(byId.get('forgotten-tower')!.areaLevels).toBeUndefined()
+  })
+})

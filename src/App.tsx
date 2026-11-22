@@ -1,19 +1,21 @@
 import { useEffect } from 'react'
 import { AreaDetail } from './components/AreaDetail'
+import { Guide } from './components/Guide'
 import { Flowchart } from './components/Flowchart'
 import { availableActs, areasInOrder, findAct, findArea, ROMAN_NUMERALS } from './data/acts'
 import { useRoute } from './lib/route'
 
 export function App() {
   const [route, navigate] = useRoute()
-  const act = findAct(route.act) ?? availableActs[0]
-  const area = findArea(act, route.areaId)
+  const actNumber = route.kind === 'act' ? route.act : availableActs[0].number
+  const act = findAct(actNumber) ?? availableActs[0]
+  const area = route.kind === 'act' ? findArea(act, route.areaId) : undefined
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
-      if (event.key === 'Escape' && area) {
-        navigate({ act: act.number })
+      if (event.key === 'Escape') {
+        if (route.kind === 'guide' || area) navigate({ kind: 'act', act: act.number })
         return
       }
       if (!area || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return
@@ -22,11 +24,11 @@ export function App() {
       if (index < 0) return
       const step = event.key === 'ArrowLeft' ? -1 : 1
       const next = ordered[(index + step + ordered.length) % ordered.length]
-      navigate({ act: act.number, areaId: next.id })
+      navigate({ kind: 'act', act: act.number, areaId: next.id })
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [act, area, navigate])
+  }, [act, area, navigate, route.kind])
 
   return (
     <div className="app">
@@ -45,13 +47,20 @@ export function App() {
                 aria-current={active ? 'page' : undefined}
                 disabled={!available}
                 title={available ? `Act ${roman}` : `Act ${roman} is not added yet`}
-                onClick={() => navigate({ act: number })}
+                onClick={() => navigate({ kind: 'act', act: number })}
               >
                 Act {roman}
               </button>
             )
           })}
         </nav>
+        <button
+          type="button"
+          className={`tabs__guide${route.kind === 'guide' ? ' tabs__guide--active' : ''}`}
+          onClick={() => navigate({ kind: 'guide' })}
+        >
+          How to read a map
+        </button>
         <p className="tabs__credit">
           Layout data from{' '}
           <a href="https://www.youtube.com/watch?v=J1EFUYGk4CA" target="_blank" rel="noreferrer">
@@ -60,18 +69,20 @@ export function App() {
         </p>
       </header>
 
-      <main className={area ? 'main main--detail' : 'main main--chart'}>
-        {area ? (
+      <main className={area || route.kind === 'guide' ? 'main main--detail' : 'main main--chart'}>
+        {route.kind === 'guide' ? (
+          <Guide onBack={() => navigate({ kind: 'act', act: act.number })} />
+        ) : area ? (
           <AreaDetail
             act={act}
             area={area}
-            onSelect={(areaId) => navigate({ act: act.number, areaId })}
-            onClose={() => navigate({ act: act.number })}
+            onSelect={(areaId) => navigate({ kind: 'act', act: act.number, areaId })}
+            onClose={() => navigate({ kind: 'act', act: act.number })}
           />
         ) : (
           <Flowchart
             act={act}
-            onSelect={(areaId) => navigate({ act: act.number, areaId })}
+            onSelect={(areaId) => navigate({ kind: 'act', act: act.number, areaId })}
           />
         )}
       </main>
