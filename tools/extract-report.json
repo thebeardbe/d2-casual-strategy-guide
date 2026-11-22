@@ -1,239 +1,92 @@
 {
   "cards": {
-    "rogue-encampment": {
-      "second": 614,
+    "lut-gholein": {
+      "second": 1118,
       "type": "Alternating Fixed",
       "expected": "Alternating Fixed",
       "confidence": "high",
-      "black": 0.762,
-      "hud": 0.0,
-      "yellow": 681
+      "black": 0.753,
+      "hud": 0.0156,
+      "yellow": 1643
     },
-    "den-of-evil": {
-      "second": 654,
+    "sewers-1": {
+      "second": 1156,
       "type": "Fixed Enough",
       "expected": "Fixed Enough",
       "confidence": "high",
-      "black": 0.854,
-      "hud": 0.0145,
-      "yellow": 99
+      "black": 0.689,
+      "hud": 0.0135,
+      "yellow": 467
     },
-    "cold-plains": {
-      "second": 701,
+    "sewers-2": {
+      "second": 1172,
+      "type": "Counter-Clockwise",
+      "expected": "Counter-Clockwise",
+      "confidence": "high",
+      "black": 0.599,
+      "hud": 0.0176,
+      "yellow": 1014
+    },
+    "far-oasis": {
+      "second": 1268,
       "type": "Big Square",
       "expected": "Big Square",
       "confidence": "high",
-      "black": 0.874,
-      "hud": 0.014,
-      "yellow": 280
+      "black": 0.607,
+      "hud": 0.0189,
+      "yellow": 652
     },
-    "cave-2": {
-      "second": 729,
-      "type": "Fixed",
-      "expected": "Fixed",
+    "harem-2": {
+      "second": 1338,
+      "type": "Fixed Enough",
+      "expected": "Fixed Enough",
       "confidence": "high",
-      "black": 0.931,
+      "black": 0.926,
       "hud": 0.0,
-      "yellow": 253
+      "yellow": 492
     },
-    "burial-ground": {
-      "second": 730,
-      "type": "Fixed",
-      "expected": "Fixed",
-      "confidence": "high",
-      "black": 0.931,
-      "hud": 0.0,
-      "yellow": 253
-    },
-    "mausoleum-crypt": {
-      "second": 750,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "high",
-      "black": 0.99,
-      "hud": 0.0,
-      "yellow": 0
-    },
-    "stony-field": {
-      "second": 755,
-      "type": "Big Square",
-      "expected": "Big Square",
-      "confidence": "high",
-      "black": 0.888,
-      "hud": 0.0181,
-      "yellow": 767
-    },
-    "underground-passage-1": {
-      "second": 817,
-      "type": "Straight",
-      "expected": "Straight",
-      "confidence": "high",
-      "black": 0.731,
-      "hud": 0.0185,
-      "yellow": 685
-    },
-    "underground-passage-2": {
-      "second": 823,
-      "type": "Straight",
-      "expected": "Straight",
-      "confidence": "high",
-      "black": 0.887,
-      "hud": 0.0029,
-      "yellow": 235
-    },
-    "dark-wood": {
-      "second": 849,
-      "type": "Big Square",
-      "expected": "Big Square",
-      "confidence": "forced",
-      "black": 0.666,
-      "hud": 0.0,
-      "yellow": 147
-    },
-    "hole-1": {
-      "second": 877,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "high",
-      "black": 0.861,
-      "hud": 0.0004,
-      "yellow": 206
-    },
-    "hole-2": {
-      "second": 879,
-      "type": "Fixed",
-      "expected": "Fixed",
-      "confidence": "high",
-      "black": 0.919,
-      "hud": 0.0,
-      "yellow": 251
-    },
-    "black-marsh": {
-      "second": 886,
-      "type": "Big Square",
-      "expected": "Big Square",
-      "confidence": "high",
-      "black": 0.731,
-      "hud": 0.0155,
-      "yellow": 644
-    },
-    "tower-cellar-1-4": {
-      "second": 898,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "high",
-      "black": 0.897,
-      "hud": 0.0,
-      "yellow": 1028
-    },
-    "tower-cellar-5": {
-      "second": 909,
-      "type": "Alternating Fixed",
-      "expected": "Alternating Fixed",
-      "confidence": "high",
-      "black": 0.927,
-      "hud": 0.0,
-      "yellow": 441
-    },
-    "monastery-gate-outer-cloister": {
-      "second": 948,
-      "type": "Alternating Fixed",
-      "expected": "Alternating Fixed",
-      "confidence": "forced",
-      "black": 0.62,
-      "hud": 0.0,
-      "yellow": 0
-    },
-    "pit-1": {
-      "second": 977,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "forced",
-      "black": 0.94,
-      "hud": 0.0,
-      "yellow": 40
-    },
-    "pit-2": {
-      "second": 981,
-      "type": null,
-      "expected": "Fixed",
-      "confidence": "none",
-      "black": 0.962,
-      "hud": 0.0,
-      "yellow": 98
-    },
-    "jail-1": {
-      "second": 1000,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "high",
-      "black": 0.893,
-      "hud": 0.0,
-      "yellow": 655
-    },
-    "jail-2": {
-      "second": 1015,
-      "type": "Straight",
-      "expected": "Straight",
-      "confidence": "high",
-      "black": 0.928,
-      "hud": 0.0,
-      "yellow": 701
-    },
-    "jail-3": {
-      "second": 1018,
-      "type": "Counter-Clockwise",
-      "expected": "Counter-Clockwise",
-      "confidence": "high",
-      "black": 0.928,
-      "hud": 0.0,
-      "yellow": 514
-    },
-    "cathedral": {
-      "second": 1028,
-      "type": "Fixed",
-      "expected": "Fixed",
-      "confidence": "high",
-      "black": 0.945,
-      "hud": 0.0,
-      "yellow": 425
-    },
-    "catacombs-1": {
-      "second": 1044,
+    "arcane-sanctuary": {
+      "second": 1389,
       "type": "Random",
       "expected": "Random",
       "confidence": "high",
-      "black": 0.907,
+      "black": 0.784,
       "hud": 0.0,
-      "yellow": 480
+      "yellow": 37
     },
-    "catacombs-2": {
-      "second": 1085,
-      "type": "Clockwise",
-      "expected": "Clockwise",
+    "canyon-of-the-magi": {
+      "second": 1431,
+      "type": "Fixed Enough",
+      "expected": "Fixed Enough",
       "confidence": "high",
-      "black": 0.836,
+      "black": 0.598,
       "hud": 0.0,
-      "yellow": 1325
+      "yellow": 47
     },
-    "catacombs-4": {
-      "second": 1105,
+    "tal-rasha-chamber": {
+      "second": 1453,
       "type": "Fixed",
       "expected": "Fixed",
-      "confidence": "forced",
-      "black": 0.941,
-      "hud": 0.0,
-      "yellow": 155
+      "confidence": "high",
+      "black": 0.835,
+      "hud": 0.0168,
+      "yellow": 1231
     }
   },
   "missing": [
-    "barracks",
-    "blood-moor",
-    "cave-1",
-    "cow-level",
-    "forgotten-tower",
-    "inner-cloister",
-    "tamoe-highland",
-    "tristram"
+    "ancient-tunnels",
+    "claw-viper-1",
+    "dry-hills",
+    "halls-1",
+    "halls-2",
+    "halls-3",
+    "lost-city",
+    "maggot-1",
+    "maggot-2",
+    "maggot-3",
+    "rocky-waste",
+    "stony-tomb-2",
+    "tal-rasha-tomb",
+    "valley-of-snakes"
   ]
 }

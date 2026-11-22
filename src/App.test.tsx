@@ -16,7 +16,7 @@ function actNav() {
 }
 
 describe('App', () => {
-  it('renders the five act tabs with only Act I enabled', () => {
+  it('renders the five act tabs with only the built acts enabled', () => {
     render(<App />)
 
     const tabs = within(actNav()).getAllByRole('button')
@@ -28,9 +28,27 @@ describe('App', () => {
       'Act V',
     ])
     expect(within(actNav()).getByRole('button', { name: 'Act I' })).toBeEnabled()
-    for (const roman of ['II', 'III', 'IV', 'V']) {
+    expect(within(actNav()).getByRole('button', { name: 'Act II' })).toBeEnabled()
+    for (const roman of ['III', 'IV', 'V']) {
       expect(within(actNav()).getByRole('button', { name: `Act ${roman}` })).toBeDisabled()
     }
+  })
+
+  it('shows the Act II chart when the Act II tab is clicked', () => {
+    render(<App />)
+
+    fireEvent.click(within(actNav()).getByRole('button', { name: 'Act II' }))
+
+    expect(window.location.hash).toBe('#/act/2')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Act II')
+    expect(screen.getByRole('group', { name: 'Act II map chart' })).toBeInTheDocument()
+    expect(within(actNav()).getByRole('button', { name: 'Act II' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    expect(within(actNav()).getByRole('button', { name: 'Act I' })).not.toHaveAttribute(
+      'aria-current',
+    )
   })
 
   it('marks Act I as the current page', () => {

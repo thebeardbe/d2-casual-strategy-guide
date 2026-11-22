@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import cards from '../../tools/cards.json'
-import { act1 } from './act1'
+import { availableActs } from './acts'
 
 interface Card {
   id: string
+  act?: number
   cardType?: string | string[]
   window: [number, number]
   allowLow?: boolean
@@ -23,10 +24,19 @@ describe('tools/cards.json manifest', () => {
     expect(manifest.length).toBeGreaterThan(0)
   })
 
-  it('only lists ids that exist as Act I areas', () => {
-    const areaIds = new Set(act1.areas.map((area) => area.id))
+  it('only lists ids that exist as areas in an available act', () => {
+    const areaIds = new Set(availableActs.flatMap((act) => act.areas.map((area) => area.id)))
     for (const card of manifest) {
       expect(areaIds.has(card.id), `card id ${JSON.stringify(card.id)}`).toBe(true)
+    }
+  })
+
+  it('labels every card with the act its area belongs to', () => {
+    const actOfArea = new Map(
+      availableActs.flatMap((act) => act.areas.map((area) => [area.id, act.number] as const)),
+    )
+    for (const card of manifest) {
+      expect(card.act, `card ${card.id} act`).toBe(actOfArea.get(card.id))
     }
   })
 

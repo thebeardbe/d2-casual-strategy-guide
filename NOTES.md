@@ -1,20 +1,38 @@
 # Notes: deferred work and open questions
 
-## Acts II to V
+## Acts III to V
 
-Act I is complete. Acts II to V need the same treatment:
+Acts I and II are complete. Acts III to V need the same treatment:
 
-1. Add `src/data/act2/` with the areas and connectors, register it in
-   `src/data/acts.ts`. The master list in the video (09:50) already gives the map
-   type and the per-entrance notes for every area in every act.
+1. Add `src/data/act3/`, `act4/`, `act5/` with areas and connectors, and register
+   them in `src/data/acts.ts`. The master list in the video (09:50) already gives
+   the map type and the per-entrance notes for every area in every act.
 2. Extend `tools/cards.json` with the per-act windows and download the matching
-   video section per act. The chapter times, verified against frames, are in
-   `references/planning/map-codex-roadmap.md`: Act II 18:35, Act III 24:22,
-   Act IV 33:01, Act V 35:55.
+   video section per act. Every card now carries an `act` field and the extractor
+   takes `--act N`, because one video section only holds one act: without the
+   filter the scan range spans cards that are not in the file and every window
+   lands on the wrong frame. The chapter times, verified against frames, are in
+   `references/planning/map-codex-roadmap.md`: Act III 24:22, Act IV 33:01,
+   Act V 35:55.
 3. Add the Skinny Rectangle colour to `src/data/mapTypes.json`. It is one of the
    ten classes in the video's legend and only appears in Act III, so its colour
    has not been sampled yet. Until it is, `mapTypeColor` logs a warning and falls
    back to grey.
+
+## Act II notes
+
+- The chart has five rows and the necessary path branches at Lut Gholein: the
+  palace route to Duriel and the desert route for the staff pieces. The area tests
+  assert a necessary DAG rooted at town, not a single chain.
+- The video shows far fewer Act II cards than Act I (22 cards for 30 nodes). Harem
+  L1, the three Palace Cellar levels and Claw Viper Temple L2 have no card at all,
+  so they read from the transcript and the master list.
+- Only two Act II cards produced usable pictures (`sewers-1`, `harem-2`). Lut
+  Gholein, Canyon of the Magi and Tal Rasha's Chamber were captured from gameplay
+  footage or from a frame that caught the act chart strip, so they show the
+  written rule instead of a picture. Worth a second pass with hand-picked frames.
+- Stony Tomb L1/L2 and Maggot Lair L3 are level 85 in Resurrected; Stony Tomb was
+  78 in Lord of Destruction. The L85 chip follows the data.
 
 ## Example images that do not exist yet
 

@@ -290,12 +290,20 @@ def content_box(frame: Path, region: tuple[int, int, int, int] | None = None) ->
     return right - left + 1, bottom - top + 1, x + left, y + top
 
 
-def parse_args() -> tuple[Path, int]:
+def parse_args() -> tuple[Path, int, int]:
     args = sys.argv[1:]
     if not args or args[0].startswith("-"):
-        raise SystemExit("usage: extract_cards.py <video.mp4> [--offset seconds]")
+        raise SystemExit("usage: extract_cards.py <video.mp4> [--offset seconds] [--act N]")
     video = Path(args[0])
     offset = 0
+    act = 0
+    if "--act" in args:
+        try:
+            act = int(args[args.index("--act") + 1])
+        except (IndexError, ValueError):
+            raise SystemExit("--act needs an integer")
+        if act < 1:
+            raise SystemExit("--act needs an integer")
     if "--offset" in args:
         try:
             offset = int(args[args.index("--offset") + 1])
@@ -303,12 +311,17 @@ def parse_args() -> tuple[Path, int]:
             raise SystemExit("--offset needs an integer number of seconds")
     if not video.exists():
         raise SystemExit(f"video not found: {video}")
-    return video, offset
+    return video, offset, act
 
 
 def main() -> None:
-    video, offset = parse_args()
-    cards = json.loads((ROOT / "tools" / "cards.json").read_text())
+    video, offset, act = parse_args()
+    all_cards = json.loads((ROOT / "tools" / "cards.json").read_text())
+    # One video section holds one act: filter, or the scan range spans cards that
+    # are not in this file and every window lands on the wrong frame.
+    cards = [card for card in all_cards if not act or card.get("act") == act]
+    if not cards:
+        raise SystemExit(f"no cards for act {act}")
     for path in (FRAMES, PANELS, TITLES, EXAMPLES):
         path.mkdir(parents=True, exist_ok=True)
 

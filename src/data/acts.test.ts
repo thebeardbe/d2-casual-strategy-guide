@@ -224,10 +224,23 @@ describe('Barracks hybrid map type', () => {
   })
 })
 
+/**
+ * The town is the single area no connector enters. Looking it up this way keeps
+ * the walk act-agnostic: Act I and Act II place their town on different cells.
+ */
+function townOf(act: Act): Area {
+  const towns = act.areas.filter(
+    (area) => !act.connectors.some((connector) => connector.to === area.id),
+  )
+  if (towns.length !== 1) {
+    throw new Error(`Act ${act.number} has ${towns.length} areas with no incoming connector`)
+  }
+  return towns[0]
+}
+
 /** Walk the graph from the town area. */
 function reachableFrom(act: Act, onlyNecessary: boolean): { reached: Set<string>; town: Area } {
-  const town = act.areas.find((area) => area.row === 1 && area.column === 0)
-  if (!town) throw new Error(`Act ${act.number} has no town area at row 1, column 0`)
+  const town = townOf(act)
 
   const outgoing = new Map<string, string[]>()
   for (const connector of act.connectors) {
@@ -288,9 +301,10 @@ for (const act of availableActs) {
       }
     })
 
-    it('keeps rows in 0..2 and columns finite', () => {
+    it('keeps rows non-negative integers and columns finite', () => {
       for (const area of act.areas) {
-        expect([0, 1, 2], `${area.id} row`).toContain(area.row)
+        expect(Number.isInteger(area.row), `${area.id} row is an integer`).toBe(true)
+        expect(area.row, `${area.id} row`).toBeGreaterThanOrEqual(0)
         expect(Number.isFinite(area.column), `${area.id} column`).toBe(true)
         expect(area.column, `${area.id} column`).toBeGreaterThanOrEqual(0)
       }
@@ -327,9 +341,14 @@ for (const act of availableActs) {
       }
     })
 
-    it('reaches every necessary area from town along necessary connectors only', () => {
+    it('puts exactly the necessary areas on the necessary path', () => {
       const { reached } = reachableFrom(act, true)
       const necessaryAreas = act.areas.filter((area) => !area.optional).map((area) => area.id)
+      for (const area of act.areas) {
+        expect(reached.has(area.id), `${area.id} optional=${Boolean(area.optional)}`).toBe(
+          !area.optional,
+        )
+      }
       expect([...reached].sort()).toEqual([...necessaryAreas].sort())
     })
 
@@ -341,39 +360,85 @@ for (const act of availableActs) {
       expect(optionalAreas.length).toBeGreaterThan(0)
     })
 
-    it('walks the necessary areas as a single chain from town', () => {
+    it('forms a DAG of necessary connectors rooted at town', () => {
       const { reached, town } = reachableFrom(act, true)
       const necessary = act.connectors.filter((connector) => connector.necessary)
-      const incoming = new Map<string, number>()
-      const outgoing = new Map<string, number>()
+
+      // Town is the one area of the whole act that nothing enters.
+      expect(
+        act.areas.filter((area) => !act.connectors.some((link) => link.to === area.id)).map((area) => area.id),
+        'the act has exactly one root area',
+      ).toEqual([town.id])
+
+      const incoming = new Map<string, string[]>()
+      const outgoing = new Map<string, string[]>()
       for (const connector of necessary) {
-        incoming.set(connector.to, (incoming.get(connector.to) ?? 0) + 1)
-        outgoing.set(connector.from, (outgoing.get(connector.from) ?? 0) + 1)
+        const into = incoming.get(connector.to) ?? []
+        into.push(connector.from)
+        incoming.set(connector.to, into)
+        const outOf = outgoing.get(connector.from) ?? []
+        outOf.push(connector.to)
+        outgoing.set(connector.from, outOf)
         expect(reached.has(connector.from), `${connector.from} is off the necessary path`).toBe(true)
         expect(reached.has(connector.to), `${connector.to} is off the necessary path`).toBe(true)
       }
+
+      // The necessary path may branch (Act II does at Lut Gholein), but every
+      // stop except town must be entered by at least one necessary connector.
       for (const id of reached) {
         if (id === town.id) {
-          expect(incoming.get(id) ?? 0, `${id} should not be entered on the necessary path`).toBe(0)
+          expect(incoming.get(id) ?? [], `${id} should not be entered on the necessary path`).toEqual(
+            [],
+          )
         } else {
-          expect(incoming.get(id), `${id} incoming necessary connectors`).toBe(1)
+          expect(
+            (incoming.get(id) ?? []).length,
+            `${id} incoming necessary connectors`,
+          ).toBeGreaterThan(0)
         }
       }
-      const endpoints = [...reached].filter((id) => (outgoing.get(id) ?? 0) === 0)
-      expect(endpoints).toHaveLength(1)
-      for (const id of reached) {
-        if (id === endpoints[0]) continue
-        expect(outgoing.get(id), `${id} outgoing necessary connectors`).toBe(1)
+
+      // Depth-first walk of the necessary-only subgraph: meeting a node that is
+      // still on the stack means a cycle, so the walk could never terminate.
+      const state = new Map<string, 'visiting' | 'done'>()
+      const stack: string[] = []
+      let cycle: string[] | undefined
+      const visit = (id: string) => {
+        if (state.get(id) === 'done' || cycle) return
+        if (state.get(id) === 'visiting') {
+          cycle = [...stack.slice(stack.indexOf(id)), id]
+          return
+        }
+        state.set(id, 'visiting')
+        stack.push(id)
+        for (const next of outgoing.get(id) ?? []) visit(next)
+        stack.pop()
+        state.set(id, 'done')
       }
+      visit(town.id)
+      expect(cycle, `necessary connectors contain a cycle: ${cycle?.join(' -> ')}`).toBeUndefined()
+      expect([...state.keys()].sort(), 'every necessary area is on the DAG').toEqual(
+        [...reached].sort(),
+      )
     })
 
     it('leaves no area unreachable when optional detours are allowed', () => {
-      const { reached } = reachableFrom(act, false)
+      const { reached, town } = reachableFrom(act, false)
       // Optional detours may hang off other optional areas, but the full graph
       // must still cover every area that the act lists.
+      expect(reached.has(town.id), 'town is reachable from itself').toBe(true)
       for (const area of act.areas) {
         expect(reached.has(area.id), `${area.id} is unreachable from town`).toBe(true)
       }
+    })
+  })
+
+  describe(`${actLabel} progression order`, () => {
+    it('starts at town and lists every area exactly once', () => {
+      const order = areaIds(areasInOrder(act))
+      expect(order[0], 'progression starts at town').toBe(townOf(act).id)
+      expect(new Set(order).size, 'no area is listed twice').toBe(order.length)
+      expect([...order].sort(), 'every area is listed').toEqual([...ids].sort())
     })
   })
 

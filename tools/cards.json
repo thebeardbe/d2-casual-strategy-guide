@@ -5,7 +5,8 @@
     "window": [
       614,
       622
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "blood-moor",
@@ -13,7 +14,8 @@
     "window": [
       632,
       641
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "den-of-evil",
@@ -21,7 +23,8 @@
     "window": [
       643,
       669
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "cold-plains",
@@ -29,7 +32,8 @@
     "window": [
       683,
       712
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "cave-1",
@@ -37,7 +41,8 @@
     "window": [
       713,
       719
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "cave-2",
@@ -45,7 +50,8 @@
     "window": [
       720,
       729
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "burial-ground",
@@ -53,7 +59,8 @@
     "window": [
       730,
       739
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "mausoleum-crypt",
@@ -61,7 +68,8 @@
     "window": [
       740,
       750
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "stony-field",
@@ -69,7 +77,8 @@
     "window": [
       751,
       787
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "tristram",
@@ -77,7 +86,8 @@
     "window": [
       789,
       799
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "cow-level",
@@ -85,7 +95,8 @@
     "window": [
       801,
       812
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "underground-passage-1",
@@ -93,7 +104,8 @@
     "window": [
       813,
       822
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "underground-passage-2",
@@ -101,7 +113,8 @@
     "window": [
       823,
       837
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "dark-wood",
@@ -110,7 +123,8 @@
       839,
       872
     ],
-    "force": 849
+    "force": 849,
+    "act": 1
   },
   {
     "id": "hole-1",
@@ -118,7 +132,8 @@
     "window": [
       873,
       877
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "hole-2",
@@ -126,7 +141,8 @@
     "window": [
       878,
       879
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "black-marsh",
@@ -134,7 +150,8 @@
     "window": [
       880,
       890
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "forgotten-tower",
@@ -142,7 +159,8 @@
     "window": [
       891,
       894
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "tower-cellar-1-4",
@@ -150,7 +168,8 @@
     "window": [
       895,
       904
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "tower-cellar-5",
@@ -158,7 +177,8 @@
     "window": [
       905,
       919
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "tamoe-highland",
@@ -166,7 +186,8 @@
     "window": [
       920,
       930
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "monastery-gate-outer-cloister",
@@ -181,7 +202,8 @@
       1080,
       0,
       0
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "pit-1",
@@ -190,7 +212,8 @@
       965,
       979
     ],
-    "force": 977
+    "force": 977,
+    "act": 1
   },
   {
     "id": "pit-2",
@@ -199,7 +222,8 @@
       980,
       981
     ],
-    "allowLow": true
+    "allowLow": true,
+    "act": 1
   },
   {
     "id": "barracks",
@@ -210,7 +234,8 @@
     "window": [
       982,
       998
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "jail-1",
@@ -218,7 +243,8 @@
     "window": [
       999,
       1014
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "jail-2",
@@ -226,7 +252,8 @@
     "window": [
       1015,
       1017
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "jail-3",
@@ -234,7 +261,8 @@
     "window": [
       1018,
       1020
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "inner-cloister",
@@ -242,7 +270,8 @@
     "window": [
       1021,
       1023
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "cathedral",
@@ -250,7 +279,8 @@
     "window": [
       1024,
       1035
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "catacombs-1",
@@ -258,7 +288,8 @@
     "window": [
       1036,
       1059
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "catacombs-2",
@@ -266,7 +297,8 @@
     "window": [
       1060,
       1090
-    ]
+    ],
+    "act": 1
   },
   {
     "id": "catacombs-4",
@@ -275,6 +307,205 @@
       1102,
       1113
     ],
-    "force": 1105
+    "force": 1105,
+    "act": 1
+  },
+  {
+    "id": "lut-gholein",
+    "cardType": "Alternating Fixed",
+    "window": [
+      1118,
+      1133
+    ],
+    "act": 2
+  },
+  {
+    "id": "sewers-1",
+    "cardType": "Fixed Enough",
+    "window": [
+      1141,
+      1159
+    ],
+    "act": 2
+  },
+  {
+    "id": "sewers-2",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1160,
+      1173
+    ],
+    "act": 2
+  },
+  {
+    "id": "rocky-waste",
+    "cardType": "Big Square",
+    "window": [
+      1176,
+      1186
+    ],
+    "act": 2
+  },
+  {
+    "id": "stony-tomb-2",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1210,
+      1222
+    ],
+    "act": 2
+  },
+  {
+    "id": "dry-hills",
+    "cardType": "Big Square",
+    "window": [
+      1239,
+      1243
+    ],
+    "act": 2
+  },
+  {
+    "id": "halls-of-the-dead-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1244,
+      1249
+    ],
+    "act": 2
+  },
+  {
+    "id": "halls-of-the-dead-2",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1250,
+      1254
+    ],
+    "act": 2
+  },
+  {
+    "id": "halls-of-the-dead-3",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1255,
+      1267
+    ],
+    "act": 2
+  },
+  {
+    "id": "far-oasis",
+    "cardType": "Big Square",
+    "window": [
+      1268,
+      1278
+    ],
+    "act": 2
+  },
+  {
+    "id": "maggot-lair-1",
+    "cardType": "Clockwise",
+    "window": [
+      1279,
+      1284
+    ],
+    "act": 2
+  },
+  {
+    "id": "maggot-lair-2",
+    "cardType": "Clockwise",
+    "window": [
+      1285,
+      1289
+    ],
+    "act": 2
+  },
+  {
+    "id": "maggot-lair-3",
+    "cardType": "Straight",
+    "window": [
+      1293,
+      1298
+    ],
+    "act": 2
+  },
+  {
+    "id": "lost-city",
+    "cardType": "Big Square",
+    "window": [
+      1299,
+      1310
+    ],
+    "act": 2
+  },
+  {
+    "id": "ancient-tunnels",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1311,
+      1320
+    ],
+    "act": 2
+  },
+  {
+    "id": "valley-of-snakes",
+    "cardType": "Fixed",
+    "window": [
+      1321,
+      1324
+    ],
+    "act": 2
+  },
+  {
+    "id": "claw-viper-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1325,
+      1334
+    ],
+    "act": 2
+  },
+  {
+    "id": "harem-2",
+    "cardType": "Fixed Enough",
+    "window": [
+      1337,
+      1357
+    ],
+    "act": 2
+  },
+  {
+    "id": "arcane-sanctuary",
+    "cardType": "Random",
+    "window": [
+      1361,
+      1390
+    ],
+    "act": 2
+  },
+  {
+    "id": "canyon-of-the-magi",
+    "cardType": "Fixed Enough",
+    "window": [
+      1427,
+      1438
+    ],
+    "act": 2
+  },
+  {
+    "id": "tal-rasha-tomb-false",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1444,
+      1451
+    ],
+    "act": 2
+  },
+  {
+    "id": "tal-rasha-chamber",
+    "cardType": "Fixed",
+    "window": [
+      1452,
+      1461
+    ],
+    "act": 2
   }
 ]
