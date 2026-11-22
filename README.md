@@ -113,13 +113,40 @@ the navigation-rule fallback instead. `tools/extract-report.json` lists them und
 The video itself is not in the repository; the script's header documents how to
 fetch and transcode the section it needs.
 
-## Provenance and licensing
+## Contributing
 
-- Layout facts, wording and example screenshots come from WithNoFiller's video.
-  The video is fan-made content built on Diablo II; Diablo II and its art are
-  property of Blizzard Entertainment. This is a non-commercial fan reference.
+Issues and pull requests are welcome, especially corrections with a source.
+Read `references/planning/` first: it holds the agreed direction, the data rules
+and the recipe for finishing Acts II-V. Two rules that matter more than style:
+
+1. **Every fact needs a source.** Area data links to the video timestamp it came
+   from; build pages link to the guide or video. A number with no source is a bug.
+2. **Say when something is not covered.** `"not covered"` is a valid answer;
+   filling gaps from memory is not.
+
+Run `npm run typecheck && npm run lint && npm run test && npm run build` before
+opening a pull request.
+
+## Licence
+
+- **Code:** MIT, see [LICENSE](LICENSE).
+- **Content** (guide text, `src/data/`, `references/planning/`, `docs/`):
+  CC BY-NC-SA 4.0, see [LICENSE-CONTENT](LICENSE-CONTENT). Non-commercial, share
+  alike, attribution required. That keeps the guide text out of commercial reuse
+  while the code stays permissive.
+- **Game screenshots** in `public/examples/` are not licensed for reuse; see
+  [NOTICE.md](NOTICE.md).
+
+## Provenance
+
+- Map rules, wording and example screenshots: WithNoFiller's
+  [The Code to Navigate Every Diablo 2 Map](https://www.youtube.com/watch?v=J1EFUYGk4CA).
+  Every card links to its timestamp.
+- Area levels: [PureDiablo's area level table](https://www.purediablo.com/diablo-2/diablo-2-area-levels).
 - Cinzel is bundled via `@fontsource/cinzel` (SIL Open Font License).
-- The panel frame is drawn in CSS, not taken from game art.
+- Diablo II and its art belong to Blizzard Entertainment. This is an unofficial
+  fan reference, not affiliated with or endorsed by Blizzard. Full notice in
+  [NOTICE.md](NOTICE.md).
 
 ## Deferred
 

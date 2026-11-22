@@ -26,3 +26,8 @@ dist-ssr
 # Extracted video frames and scratch scripts (regenerate with tools/extract_cards.py)
 .extract/
 .scratch/
+
+# Reference material that must not be published: Blizzard UI screenshots and
+# AI-generated HTML used as a style reference only. Planning notes stay tracked.
+references/*.png
+references/deepseek_*.html
