@@ -10,7 +10,6 @@ export type MapTypeKey =
   | 'big-square'
   | 'big-rectangle'
   | 'skinny-rectangle'
-  | 'skinny-rectangle'
   | 'counter-clockwise'
   | 'clockwise'
   | 'straight'

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Act, Area, MapTypeKey } from '../types'
 import { areasInOrder, availableActs } from './acts'
 import { act1 } from './act1'
+import { act2 } from './act2'
 import palette from './mapTypes.json'
 import { FALLBACK_COLOR, areaFill, areaMapTypeLabel, areaMapTypes, mapTypeColor } from './mapTypes'
 
@@ -500,9 +501,13 @@ for (const act of availableActs) {
     })
 
     it('only gives an example picture to a fixed, fixed-enough or alternating-fixed area', () => {
-      const withExample = act.areas.filter((area) => area.example)
-      expect(withExample.length, 'at least one area keeps an example').toBeGreaterThan(0)
-      for (const area of withExample) {
+      // Not every act has examples yet: Act III ships without them because its
+      // card windows have not been scanned (see NOTES.md, "Acts III to V",
+      // step 2). Keep the map-type rule strict for every example that does
+      // exist, and cover the "we deleted all pictures" failure mode per act in
+      // the separate summary below.
+      for (const area of act.areas) {
+        if (!area.example) continue
         for (const key of areaMapTypes(area)) {
           expect(EXAMPLE_MAP_TYPES.has(key), `${area.id} has an example but is ${key}`).toBe(true)
         }
@@ -525,6 +530,98 @@ for (const act of availableActs) {
     })
   })
 }
+
+describe('example images across the built acts', () => {
+  // Act III deliberately ships without example images: the card windows for
+  // that act have not been scanned yet, so every Act III area has
+  // `example: undefined`. See NOTES.md ("Acts III to V", step 2). This skip is
+  // the standing reminder to backfill the act once the scan lands; it is a
+  // documented gap, not a licence to drop the map-type rule above.
+  it.skip('gives every available act at least one example picture', () => {
+    for (const act of availableActs) {
+      const examples = act.areas.filter((area) => area.example)
+      expect(examples.length, `Act ${act.number} keeps at least one example`).toBeGreaterThan(0)
+    }
+  })
+
+  it('keeps at least one example picture in Act I and Act II', () => {
+    // Guards the "we accidentally deleted all pictures" failure mode for the
+    // acts whose card windows have been scanned. Act III is covered by the
+    // skipped test above until its scan lands.
+    for (const act of [act1, act2]) {
+      const examples = act.areas.filter((area) => area.example)
+      expect(examples.length, `Act ${act.number} keeps at least one example`).toBeGreaterThan(0)
+    }
+  })
+})
+
+/**
+ * Area ids reused across acts, with every act that owns the id. Acts share one
+ * URL space (`#/act/N/id`) and one area lookup, so a reused id silently points
+ * at the wrong act. Act III once reused `sewers-1` from Act II; the cards test
+ * caught it, not the per-act area tests.
+ */
+function duplicateAreaIds(acts: Act[]): { id: string; actNumbers: number[] }[] {
+  const owners = new Map<string, number[]>()
+  for (const act of acts) {
+    for (const area of act.areas) {
+      const list = owners.get(area.id) ?? []
+      list.push(act.number)
+      owners.set(area.id, list)
+    }
+  }
+  return [...owners]
+    .filter(([, actNumbers]) => actNumbers.length > 1)
+    .map(([id, actNumbers]) => ({ id, actNumbers }))
+}
+
+function describeDuplicates(duplicates: { id: string; actNumbers: number[] }[]): string {
+  return duplicates
+    .map(({ id, actNumbers }) => {
+      const acts = actNumbers.map((number) => `Act ${number}`).join(' and ')
+      return `area id ${JSON.stringify(id)} is used by ${acts}`
+    })
+    .join('; ')
+}
+
+describe('area ids across the available acts', () => {
+  it('are globally unique, so a lookup cannot reach the wrong act', () => {
+    const duplicates = duplicateAreaIds(availableActs)
+    const message =
+      duplicates.length === 0
+        ? 'area ids are globally unique'
+        : `duplicate area ids across acts: ${describeDuplicates(duplicates)}`
+    expect(describeDuplicates(duplicates), message).toBe('')
+  })
+
+  it('names the duplicate id and both acts when an id is reused', () => {
+    // Reproduce the Act III regression with synthetic acts, so the detector and
+    // its failure message are locked in even while the real data is clean.
+    const reused = makeSyntheticArea('sewers-1', 0, 0)
+    const act2Like: Act = {
+      number: 2,
+      roman: 'II',
+      title: 'Act II stand-in',
+      areas: [{ ...reused, act: 2 }],
+      connectors: [],
+    }
+    const act3Like: Act = {
+      number: 3,
+      roman: 'III',
+      title: 'Act III stand-in',
+      areas: [{ ...reused, act: 3 }],
+      connectors: [],
+    }
+
+    const duplicates = duplicateAreaIds([act2Like, act3Like])
+    expect(duplicates).toEqual([{ id: 'sewers-1', actNumbers: [2, 3] }])
+
+    const message = `duplicate area ids across acts: ${describeDuplicates(duplicates)}`
+    expect(message).toContain('"sewers-1"')
+    expect(message).toContain('Act 2')
+    expect(message).toContain('Act 3')
+  })
+})
 
 describe('Act I area levels', () => {
   const withLevels = act1.areas.filter((area) => area.areaLevels)

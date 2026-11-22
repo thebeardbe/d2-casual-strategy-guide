@@ -19,7 +19,26 @@ Acts I and II are complete. Acts III to V need the same treatment:
    has not been sampled yet. Until it is, `mapTypeColor` logs a warning and falls
    back to grey.
 
-## Act III: started, not finished
+## Act III: areas built, pictures pending
+
+Act III's 28 areas, chart and connectors are in. The layout is committed to
+`references/planning/act3-layout.md`: columns snapped to whole cells so every
+arrow renders, which moves Great Marsh into the middle row and puts the two "?"
+connector tiles into the notes instead of the chart.
+
+Still missing, on purpose:
+
+- **No example images.** The card windows for Act III have not been scanned yet, so
+  no `example` is set on any Act III area. A skipped test in
+  `src/data/acts.test.ts` marks the gap. Next pass: title-box scan at 1 fps, add
+  `"act": 3` cards, run `tools/extract_cards.py .extract/act3-h264.mp4 --offset 1455 --act 3`.
+- Kurast Sewers sit off Disused Fane in the chart because the model needs
+  axis-aligned arrows; in the game they are entered from Kurast Bazaar and Upper
+  Kurast, which the notes say.
+- Area levels use the Resurrected values, so the temples, the sewers, the Swampy
+  Pit levels and the Arachnid Lair carry the L85 chip.
+
+## Act III measurement notes
 
 The expensive preparation is done and the findings are here so none of it is
 repeated:

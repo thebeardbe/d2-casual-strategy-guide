@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { App } from './App'
+import { availableActs, ROMAN_NUMERALS } from './data/acts'
 
 function resetHash() {
   window.history.replaceState(null, '', '/')
@@ -27,10 +28,19 @@ describe('App', () => {
       'Act IV',
       'Act V',
     ])
-    expect(within(actNav()).getByRole('button', { name: 'Act I' })).toBeEnabled()
-    expect(within(actNav()).getByRole('button', { name: 'Act II' })).toBeEnabled()
-    for (const roman of ['III', 'IV', 'V']) {
-      expect(within(actNav()).getByRole('button', { name: `Act ${roman}` })).toBeDisabled()
+    // Derive the split from the data rather than naming the built acts here:
+    // each tab is enabled exactly when its act is in availableActs, so adding
+    // an act does not require editing this test.
+    const built = new Set(availableActs.map((act) => act.number))
+    expect(built.size, 'availableActs lists no act twice').toBe(availableActs.length)
+    for (const [index, roman] of ROMAN_NUMERALS.entries()) {
+      const enabled = built.has(index + 1)
+      const tab = within(actNav()).getByRole('button', { name: `Act ${roman}` })
+      if (enabled) {
+        expect(tab, `Act ${roman} is built, so its tab must be enabled`).toBeEnabled()
+      } else {
+        expect(tab, `Act ${roman} is not built, so its tab must be disabled`).toBeDisabled()
+      }
     }
   })
 
@@ -43,6 +53,23 @@ describe('App', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Act II')
     expect(screen.getByRole('group', { name: 'Act II map chart' })).toBeInTheDocument()
     expect(within(actNav()).getByRole('button', { name: 'Act II' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    expect(within(actNav()).getByRole('button', { name: 'Act I' })).not.toHaveAttribute(
+      'aria-current',
+    )
+  })
+
+  it('shows the Act III chart when the Act III tab is clicked', () => {
+    render(<App />)
+
+    fireEvent.click(within(actNav()).getByRole('button', { name: 'Act III' }))
+
+    expect(window.location.hash).toBe('#/act/3')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Act III')
+    expect(screen.getByRole('group', { name: 'Act III map chart' })).toBeInTheDocument()
+    expect(within(actNav()).getByRole('button', { name: 'Act III' })).toHaveAttribute(
       'aria-current',
       'page',
     )

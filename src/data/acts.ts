@@ -1,12 +1,13 @@
 import type { Act, Area, Connector } from '../types'
 import { act1 } from './act1'
 import { act2 } from './act2'
+import { act3 } from './act3'
 
 /**
  * Acts that are built so far. The tab bar always shows all five; the rest stay
  * disabled until their data lands, so the plan is visible from the UI.
  */
-export const availableActs: Act[] = [act1, act2]
+export const availableActs: Act[] = [act1, act2, act3]
 
 export const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V'] as const
 
