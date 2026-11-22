@@ -19,6 +19,22 @@ Acts I and II are complete. Acts III to V need the same treatment:
    has not been sampled yet. Until it is, `mapTypeColor` logs a warning and falls
    back to grey.
 
+## Act IV: built, no pictures
+
+Seven areas: Pandemonium Fortress, the three big rectangles, River of Flame split
+into Start (fixed enough, with the Hell Forge branch) and End (alternating fixed,
+the "road to chaos" H patterns), and the Chaos Sanctuary with its five seals and
+eight layouts. Act IV is a straight line, so no area is optional, and the test
+that used to demand one optional area per act now asks for one somewhere across
+the acts.
+
+Open items for the cleanup pass:
+
+- No example images for Acts III or IV. Both need the 1 fps title-box scan to
+  build their card windows first.
+- Act IV area levels were written from the standard table, not re-checked against
+  PureDiablo in this pass. Normal and Nightmare values in particular want a look.
+
 ## Act III: areas built, pictures pending
 
 Act III's 28 areas, chart and connectors are in. The layout is committed to

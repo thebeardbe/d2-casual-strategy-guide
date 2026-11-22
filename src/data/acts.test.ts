@@ -357,8 +357,20 @@ for (const act of availableActs) {
       const { reached } = reachableFrom(act, true)
       const optionalAreas = act.areas.filter((area) => area.optional).map((area) => area.id)
       const offPath = act.areas.filter((area) => !reached.has(area.id)).map((area) => area.id)
+
+      // Both directions of the invariant: everything off the necessary path is
+      // flagged optional, and nothing on it is. How many areas that leaves is
+      // the act's own business: Act IV is a pure straight line, so it has no
+      // side content at all. The "the chart has some side content" guarantee is
+      // cross-act (see "optional areas across the built acts" below).
       expect([...offPath].sort()).toEqual([...optionalAreas].sort())
-      expect(optionalAreas.length).toBeGreaterThan(0)
+      for (const area of act.areas) {
+        if (reached.has(area.id)) {
+          expect(area.optional, `${area.id} is on the necessary path, so it is not optional`).not.toBe(true)
+        } else {
+          expect(area.optional, `${area.id} is off the necessary path, so it is optional`).toBe(true)
+        }
+      }
     })
 
     it('forms a DAG of necessary connectors rooted at town', () => {
@@ -583,6 +595,25 @@ function describeDuplicates(duplicates: { id: string; actNumbers: number[] }[]):
     })
     .join('; ')
 }
+
+describe('optional areas across the built acts', () => {
+  it('keeps at least one optional area somewhere, without demanding one per act', () => {
+    // A per-act "at least one optional area" rule would outlaw a legitimately
+    // linear act: Act IV runs Pandemonium Fortress -> Chaos Sanctuary with no
+    // side content. The coverage guarantee belongs here instead, so dropping
+    // every detour from every act still fails loudly.
+    const counts = availableActs.map((act) => ({
+      act: act.number,
+      optional: act.areas.filter((area) => area.optional).length,
+    }))
+    const total = counts.reduce((sum, entry) => sum + entry.optional, 0)
+
+    expect(
+      total,
+      `optional areas per act (act: count): ${counts.map((entry) => `${entry.act}: ${entry.optional}`).join(', ')}`,
+    ).toBeGreaterThan(0)
+  })
+})
 
 describe('area ids across the available acts', () => {
   it('are globally unique, so a lookup cannot reach the wrong act', () => {
