@@ -16,6 +16,7 @@ interface AreaDetailProps {
 
 export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
   const fill = areaFill(area)
+  const directional = isDirectional(area.rules[0]?.turn ?? 'random')
   const typeBackground = fill.gradient
     ? `linear-gradient(180deg, ${fill.gradient[0]} 0%, ${fill.gradient[1]} 100%)`
     : fill.solid
@@ -97,12 +98,16 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
               </figcaption>
             </figure>
           ) : (
-            <>
-              <NavigationRule area={area} />
-              {isDirectional(area.rules[0]?.turn ?? 'random') && (
-                <TurnCalculator key={area.id} area={area} />
+            <div className={directional ? 'pair' : 'pair pair--single'}>
+              <section className="frame" aria-label="The rule">
+                <NavigationRule area={area} />
+              </section>
+              {directional && (
+                <section className="frame" aria-label="Work out your exit">
+                  <TurnCalculator key={area.id} area={area} />
+                </section>
               )}
-            </>
+            </div>
           )}
         </div>
       </section>
