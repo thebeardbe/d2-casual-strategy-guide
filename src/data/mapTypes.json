@@ -44,6 +44,11 @@
       "label": "Random",
       "color": "#767170",
       "hint": "No reliable rule, read the dead-end tiles instead"
+    },
+    "skinny-rectangle": {
+      "label": "Skinny Rectangle",
+      "color": "#7b8900",
+      "hint": "Outdoor corridor map: follow it to the end, the exit is usually in the far corner"
     }
   },
   "order": [
@@ -52,6 +57,7 @@
     "alternating-fixed",
     "big-square",
     "big-rectangle",
+    "skinny-rectangle",
     "counter-clockwise",
     "clockwise",
     "straight",

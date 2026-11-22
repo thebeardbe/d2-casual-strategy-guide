@@ -19,6 +19,37 @@ Acts I and II are complete. Acts III to V need the same treatment:
    has not been sampled yet. Until it is, `mapTypeColor` logs a warning and falls
    back to grey.
 
+## Act III: started, not finished
+
+The expensive preparation is done and the findings are here so none of it is
+repeated:
+
+- Section fetched to `.extract/source-act3.mp4` (24:15-33:05) and transcoded to
+  `.extract/act3-h264.mp4` at 1080p with 1s keyframes (531 MB, gitignored).
+- The Act III chart frame is at **24:27** (12s into that section); extract it with
+  `-ss 12`. It is the source for node positions and the necessary/optional arrows.
+- **Skinny Rectangle colour sampled: `#7b8900`** (olive), now in
+  `src/data/mapTypes.json`. The three Skinny Rectangle nodes are Spider Forest,
+  Great Marsh and Flayer Jungle.
+- The chart is four rows, not three, and has a **connector tile drawn as "?"**
+  between Spider Forest and Flayer Jungle: the jungle maps are linked through that
+  junction rather than in a simple row. The rows interleave (Arachnid Lair and
+  Great Marsh sit above Spider Forest; the Swampy Pit and Flayer Dungeon chains
+  hang off it), so the layout needs measuring from the frame rather than copying
+  Act II's grid.
+- Twenty-nine areas, from the master list: Kurast Docks, Spider Forest, Spider
+  Cavern, Arachnid Lair, Great Marsh, Flayer Jungle, Swampy Pit 1-3, Flayer
+  Dungeon 1-3, Lower Kurast, Kurast Bazaar, Ruined Temple, Disused Fane, Sewers 1-2,
+  Upper Kurast, Forgotten Temple, Forgotten Reliquary, Kurast Causeway, Disused
+  Reliquary, Ruined Fane, Travincal, Durance of Hate 1-3.
+- Chapter times inside the act: jungles 24:22, Lower Kurast superchests 28:52,
+  finishing 30:23. Act IV starts 33:01.
+
+Stopped here on purpose rather than guessing node coordinates: a chart that is
+subtly wrong is worse than one that is obviously unfinished. Next session: measure
+the four rows from the frame at 24:27, add the card windows the same way as Acts I
+and II (title-box scan at 1 fps, then `--act 3`), and author `src/data/act3/`.
+
 ## Act II notes
 
 - The chart has five rows and the necessary path branches at Lut Gholein: the
