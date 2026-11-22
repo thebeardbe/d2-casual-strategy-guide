@@ -45,10 +45,15 @@ repeated:
 - Chapter times inside the act: jungles 24:22, Lower Kurast superchests 28:52,
   finishing 30:23. Act IV starts 33:01.
 
-Stopped here on purpose rather than guessing node coordinates: a chart that is
-subtly wrong is worse than one that is obviously unfinished. Next session: measure
-the four rows from the frame at 24:27, add the card windows the same way as Acts I
-and II (title-box scan at 1 fps, then `--act 3`), and author `src/data/act3/`.
+The chart has now been measured and the full node table (27 boxes, four rows,
+measured fill colours, derived columns) is in
+`references/planning/act3-layout.md`. It also records the two "?" connector tiles
+and the three diagonal arrows that `arrowBetween` cannot draw, with the two
+options for handling them (snap the columns, or teach the layout diagonal arrows).
+
+Stopped before authoring the areas rather than guessing connectors: a chart that is
+subtly wrong is worse than one that is obviously unfinished. Everything needed to
+finish Act III without re-measuring is in that file.
 
 ## Act II notes
 
