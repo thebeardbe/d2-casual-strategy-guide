@@ -31,7 +31,7 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
           <p className="panel__waypoint">
             Waypoint: {area.waypoint ? area.waypoint.where : 'none in this level'}
           </p>
-          <DirectionGlyph turn={area.rules[0]?.turn ?? 'random'} size={128} />
+          <DirectionGlyph turn={glyphTurn(area)} size={128} />
           <ul className="panel__types">
             {areaMapTypes(area).map((key) => (
               <li key={key} className="panel__type-hint">
@@ -52,16 +52,16 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
             />
           )}
           {area.rules.length > 0 && <Section title="Navigation:" items={describeRules(area.rules)} />}
-          <p className="panel__source">
-            <a
-              href={`https://www.youtube.com/watch?v=J1EFUYGk4CA&t=${area.videoTime}s`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Watch this map in the video at {formatTime(area.videoTime)}
-            </a>
-          </p>
         </div>
+        <p className="panel__source">
+          <a
+            href={`https://www.youtube.com/watch?v=J1EFUYGk4CA&t=${area.videoTime}s`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Watch this map in the video at {formatTime(area.videoTime)}
+          </a>
+        </p>
       </aside>
 
       <section className="detail__main">
@@ -118,6 +118,18 @@ function Section({ title, items }: SectionProps) {
       </ul>
     </section>
   )
+}
+
+/**
+ * The glyph should describe the level's shape, not whichever rule happens to be
+ * first: the Outer Cloister is alternating fixed, but its first rule is the
+ * fixed monastery gate.
+ */
+function glyphTurn(area: Area) {
+  const type = Array.isArray(area.mapType) ? area.mapType[0] : area.mapType
+  if (type === 'alternating-fixed') return 'alternating' as const
+  if (type === 'fixed' || type === 'fixed-enough') return 'fixed' as const
+  return area.rules[0]?.turn ?? 'random'
 }
 
 function formatTime(seconds: number): string {
