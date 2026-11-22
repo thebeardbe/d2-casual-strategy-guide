@@ -9,10 +9,11 @@ Diablo II, Diablo II: Lord of Destruction, Diablo II: Resurrected and the Reign
 of the Warlock content, plus all game art, names and text, are the property of
 Blizzard Entertainment. Project Diablo 2 is a community mod.
 
-The files under `public/examples/` are screenshots of the game, cropped from the
-source video listed below. They are included so the map cards can show a layout
-example. They are **not** covered by the MIT licence or by the content licence,
-and they are not intended for reuse.
+The files under `public/examples/` are screenshots taken from the source videos
+listed below and used here as illustrations, so a map card can show an example
+layout. They are **not for commercial use**, are **not** covered by the MIT
+licence or by the content licence, and are not intended for reuse. If a rights
+holder asks for them to be removed, they will be.
 
 The rest of the artwork (the chart, node styling, panel frame, icons) is drawn in
 CSS or SVG by this project.
