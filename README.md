@@ -27,6 +27,27 @@ npm run build      # static bundle in dist/
 Every view has its own URL (`#/act/1`, `#/act/1/jail-2`), so areas can be linked
 and reloaded.
 
+## Running it in Docker
+
+```bash
+docker compose up -d --build      # http://localhost:8080
+PORT=9000 docker compose up -d    # different host port
+docker compose down
+```
+
+Or without compose:
+
+```bash
+npm run docker:build             # docker build -t d2-map-codex .
+npm run docker:run               # docker run --rm -p 8080:80 d2-map-codex
+```
+
+The image is a two-stage build: Node 24 compiles and typechecks the site, then
+only the built files are copied into `nginx:alpine` (~75 MB). The container runs
+read-only with a `no-new-privileges` policy, serves gzip-compressed assets,
+caches hashed bundles for a year, and exposes `/healthz` for the built-in
+healthcheck. No runtime configuration or volumes are needed.
+
 ## Keyboard
 
 | Key | Action |

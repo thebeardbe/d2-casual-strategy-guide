@@ -1,0 +1,18 @@
+# Build context: everything the image does not need. The extracted video frames
+# alone would add ~520 MB to the build context.
+node_modules
+dist
+.git
+.gitignore
+.extract
+.scratch
+references
+tools
+Dockerfile
+docker-compose.yml
+.dockerignore
+NOTES.md
+README.md
+*.test.ts
+*.test.tsx
+src/test

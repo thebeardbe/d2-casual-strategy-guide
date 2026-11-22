@@ -1,0 +1,16 @@
+services:
+  web:
+    build:
+      context: .
+    image: d2-map-codex:latest
+    container_name: d2-map-codex
+    ports:
+      # Host port only; change it with PORT=9000 docker compose up -d
+      - "${PORT:-8080}:80"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
