@@ -123,5 +123,8 @@ fetch and transcode the section it needs.
 
 ## Deferred
 
+Planned direction, the reasoning and the recipe for finishing Acts II-V live in
+`references/planning/`. Read that before starting new work on this repo.
+
 See `NOTES.md`: Acts II to V, the Skinny Rectangle palette entry, more example
 images, and the interactive "pick your entrance direction" helper.

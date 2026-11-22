@@ -7,9 +7,10 @@ Act I is complete. Acts II to V need the same treatment:
 1. Add `src/data/act2/` with the areas and connectors, register it in
    `src/data/acts.ts`. The master list in the video (09:50) already gives the map
    type and the per-entrance notes for every area in every act.
-2. Extend `tools/cards.json` with the per-act windows (the video chapters are:
-   Act 2 24:22, Act 3 40:46, Act 4 53:01, Act 5 59:01) and download the matching
-   video section per act.
+2. Extend `tools/cards.json` with the per-act windows and download the matching
+   video section per act. The chapter times, verified against frames, are in
+   `references/planning/map-codex-roadmap.md`: Act II 18:35, Act III 24:22,
+   Act IV 33:01, Act V 35:55.
 3. Add the Skinny Rectangle colour to `src/data/mapTypes.json`. It is one of the
    ten classes in the video's legend and only appears in Act III, so its colour
    has not been sampled yet. Until it is, `mapTypeColor` logs a warning and falls
