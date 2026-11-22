@@ -1,0 +1,179 @@
+/* The chart: nodes, chunky arrows and the legend. */
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 24px 40px;
+  gap: 10px;
+}
+
+.chart__heading {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(38px, 5.4vw, 76px);
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1.05;
+}
+
+.chart__numeral {
+  font-weight: 400;
+}
+
+.chart__svg {
+  display: block;
+  width: 100%;
+  max-width: 1720px;
+  height: auto;
+  overflow: visible;
+}
+
+/* Nodes -------------------------------------------------------------------- */
+
+.node {
+  transition: filter 120ms ease;
+}
+
+.node--interactive {
+  cursor: pointer;
+}
+
+.node__box {
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  transition: filter 120ms ease, stroke-width 120ms ease;
+}
+
+.node--interactive:hover .node__box,
+.node--interactive:focus-visible .node__box {
+  filter: brightness(1.22);
+  stroke-width: 3.5;
+}
+
+.node--interactive:focus-visible {
+  outline: none;
+}
+
+.node__ring {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 5px var(--highlight)) drop-shadow(0 0 12px rgba(159, 232, 255, 0.7));
+}
+
+.node__label {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  fill: #ffffff;
+  paint-order: stroke fill;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Arrows ------------------------------------------------------------------- */
+
+.arrow {
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.arrow--necessary {
+  fill: #ffffff;
+  stroke: var(--necessary);
+}
+
+.arrow--optional {
+  fill: #fff8e8;
+  stroke: var(--optional);
+}
+
+/* Legend ------------------------------------------------------------------- */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend__swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+.legend__item--arrows {
+  gap: 8px;
+  color: var(--dim);
+}
+
+.legend__arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 11px solid #fff;
+  transform: rotate(90deg);
+}
+
+.legend__arrow--necessary {
+  filter: drop-shadow(1px 0 0 var(--necessary)) drop-shadow(-1px 0 0 var(--necessary));
+}
+
+.legend__arrow--optional {
+  filter: drop-shadow(1px 0 0 var(--optional)) drop-shadow(-1px 0 0 var(--optional));
+}
+
+/* Compact chart, used as the header strip of the detail view ---------------- */
+
+.chart--compact {
+  padding: 0;
+  gap: 0;
+  width: 100%;
+}
+
+.chart--compact .chart__svg {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.chart--compact .node__box {
+  stroke-width: 2;
+}
+
+.chart--compact .node__label {
+  font-size: 13px;
+}
+
+.chart--compact .node__ring {
+  stroke-width: 2;
+}
+
+.chart--compact .arrow {
+  stroke-width: 2;
+}
+
+.chart--compact .node--interactive:hover .node__box {
+  stroke-width: 2.5;
+}

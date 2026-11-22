@@ -1,0 +1,273 @@
+[
+  {
+    "id": "rogue-encampment",
+    "cardType": "Alternating Fixed",
+    "window": [
+      614,
+      622
+    ]
+  },
+  {
+    "id": "blood-moor",
+    "cardType": "Big Rectangle",
+    "window": [
+      632,
+      641
+    ]
+  },
+  {
+    "id": "den-of-evil",
+    "cardType": "Fixed Enough",
+    "window": [
+      643,
+      669
+    ]
+  },
+  {
+    "id": "cold-plains",
+    "cardType": "Big Square",
+    "window": [
+      683,
+      712
+    ]
+  },
+  {
+    "id": "cave-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      713,
+      719
+    ]
+  },
+  {
+    "id": "cave-2",
+    "cardType": "Fixed",
+    "window": [
+      720,
+      729
+    ]
+  },
+  {
+    "id": "burial-ground",
+    "cardType": "Fixed",
+    "window": [
+      730,
+      739
+    ]
+  },
+  {
+    "id": "mausoleum-crypt",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      740,
+      750
+    ]
+  },
+  {
+    "id": "stony-field",
+    "cardType": "Big Square",
+    "window": [
+      751,
+      787
+    ]
+  },
+  {
+    "id": "tristram",
+    "cardType": "Fixed",
+    "window": [
+      789,
+      799
+    ]
+  },
+  {
+    "id": "cow-level",
+    "cardType": "Big Square",
+    "window": [
+      801,
+      812
+    ]
+  },
+  {
+    "id": "underground-passage-1",
+    "cardType": "Straight",
+    "window": [
+      813,
+      822
+    ]
+  },
+  {
+    "id": "underground-passage-2",
+    "cardType": "Straight",
+    "window": [
+      823,
+      837
+    ]
+  },
+  {
+    "id": "dark-wood",
+    "cardType": "Big Square",
+    "window": [
+      839,
+      872
+    ],
+    "force": 849
+  },
+  {
+    "id": "hole-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      873,
+      877
+    ]
+  },
+  {
+    "id": "hole-2",
+    "cardType": "Fixed",
+    "window": [
+      878,
+      879
+    ]
+  },
+  {
+    "id": "black-marsh",
+    "cardType": "Big Square",
+    "window": [
+      880,
+      890
+    ]
+  },
+  {
+    "id": "forgotten-tower",
+    "cardType": "Fixed",
+    "window": [
+      891,
+      894
+    ]
+  },
+  {
+    "id": "tower-cellar-1-4",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      895,
+      904
+    ]
+  },
+  {
+    "id": "tower-cellar-5",
+    "cardType": "Alternating Fixed",
+    "window": [
+      905,
+      919
+    ]
+  },
+  {
+    "id": "tamoe-highland",
+    "cardType": "Big Square",
+    "window": [
+      920,
+      930
+    ]
+  },
+  {
+    "id": "monastery-gate-outer-cloister",
+    "cardType": "Alternating Fixed",
+    "window": [
+      941,
+      964
+    ]
+  },
+  {
+    "id": "pit-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      965,
+      979
+    ],
+    "force": 977
+  },
+  {
+    "id": "pit-2",
+    "cardType": "Fixed",
+    "window": [
+      980,
+      981
+    ],
+    "allowLow": true
+  },
+  {
+    "id": "barracks",
+    "cardType": [
+      "Counter-Clockwise",
+      "Straight"
+    ],
+    "window": [
+      982,
+      998
+    ]
+  },
+  {
+    "id": "jail-1",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      999,
+      1014
+    ]
+  },
+  {
+    "id": "jail-2",
+    "cardType": "Straight",
+    "window": [
+      1015,
+      1017
+    ]
+  },
+  {
+    "id": "jail-3",
+    "cardType": "Counter-Clockwise",
+    "window": [
+      1018,
+      1020
+    ]
+  },
+  {
+    "id": "inner-cloister",
+    "cardType": "Fixed",
+    "window": [
+      1021,
+      1023
+    ]
+  },
+  {
+    "id": "cathedral",
+    "cardType": "Fixed",
+    "window": [
+      1024,
+      1035
+    ]
+  },
+  {
+    "id": "catacombs-1",
+    "cardType": "Random",
+    "window": [
+      1036,
+      1059
+    ]
+  },
+  {
+    "id": "catacombs-2",
+    "cardType": "Clockwise",
+    "window": [
+      1060,
+      1090
+    ]
+  },
+  {
+    "id": "catacombs-4",
+    "cardType": "Fixed",
+    "window": [
+      1102,
+      1113
+    ],
+    "force": 1105
+  }
+]

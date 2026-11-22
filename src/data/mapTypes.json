@@ -1,0 +1,60 @@
+{
+  "types": {
+    "fixed": {
+      "label": "Fixed",
+      "color": "#930000",
+      "hint": "Same layout every time"
+    },
+    "fixed-enough": {
+      "label": "Fixed Enough",
+      "color": "#ff0607",
+      "hint": "Same shape every time, small variations only"
+    },
+    "alternating-fixed": {
+      "label": "Alternating Fixed",
+      "color": "#7a007d",
+      "hint": "Only a handful of pre-built layouts, each a mirror of another"
+    },
+    "big-square": {
+      "label": "Big Square",
+      "color": "#ef6f00",
+      "hint": "Outdoor square, the road connects entrance and exit"
+    },
+    "big-rectangle": {
+      "label": "Big Rectangle",
+      "color": "#c99200",
+      "hint": "Outdoor rectangle, the road connects entrance and exit"
+    },
+    "counter-clockwise": {
+      "label": "Counter-Clockwise",
+      "color": "#003100",
+      "hint": "Turn 90 degrees counter-clockwise from the entrance pathway"
+    },
+    "clockwise": {
+      "label": "Clockwise",
+      "color": "#00135c",
+      "hint": "Turn 90 degrees clockwise from the entrance pathway"
+    },
+    "straight": {
+      "label": "Straight",
+      "color": "#007bad",
+      "hint": "Entrance and exit pathways point the same way"
+    },
+    "random": {
+      "label": "Random",
+      "color": "#767170",
+      "hint": "No reliable rule, read the dead-end tiles instead"
+    }
+  },
+  "order": [
+    "fixed",
+    "fixed-enough",
+    "alternating-fixed",
+    "big-square",
+    "big-rectangle",
+    "counter-clockwise",
+    "clockwise",
+    "straight",
+    "random"
+  ]
+}
