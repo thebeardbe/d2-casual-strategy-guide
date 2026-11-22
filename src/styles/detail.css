@@ -661,7 +661,7 @@
 .levels__head,
 .levels__row {
   display: grid;
-  grid-template-columns: 92px repeat(3, 50px);
+  grid-template-columns: 92px repeat(3, 50px) 40px;
   gap: 4px;
   align-items: center;
 }
@@ -847,4 +847,18 @@
   .pair {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.levels__top {
+  justify-self: start;
+  padding: 2px 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffe6a8;
+  background: linear-gradient(180deg, #6b5420, #3d2f12);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  cursor: help;
 }

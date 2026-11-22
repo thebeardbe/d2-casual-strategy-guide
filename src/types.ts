@@ -81,6 +81,8 @@ export interface Area {
   rules: NavigationRule[]
   /** The fixed layouts a level can take, for fixed and alternating fixed maps. */
   variants?: { label: string; detail: string }[]
+  /** Why an area is worth farming, and what for. */
+  farming?: { topic: string; detail: string }[]
   /** Everything worth knowing that is not a feature, entrance or exit. */
   notes?: string[]
   /** Second in the source video where this area is explained. */

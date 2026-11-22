@@ -4,6 +4,9 @@ interface AreaLevelBadgesProps {
   area: Pick<Area, 'areaLevels' | 'name'>
 }
 
+/** Hell area level that means every item can drop. */
+const TOP_AREA_LEVEL = 85
+
 const DIFFICULTIES = [
   { key: 'normal', label: 'Normal', tone: 'normal' },
   { key: 'nightmare', label: 'Nightmare', tone: 'nightmare' },
@@ -43,12 +46,24 @@ export function AreaLevelBadges({ area }: AreaLevelBadgesProps) {
                 {entry[difficulty.key]}
               </span>
             ))}
+            {entry.hell >= TOP_AREA_LEVEL && (
+              <span className="levels__top" title={topTooltip(entry)}>
+                L85
+              </span>
+            )}
           </div>
         ))}
       </div>
-      <p className="levels__hint">Hover a badge: higher area levels drop better items.</p>
+      <p className="levels__hint">
+        Hover a badge for details. L85 marks an area level 85 zone, the top tier for drops.
+      </p>
     </div>
   )
+}
+
+function topTooltip(entry: AreaLevels): string {
+  const name = entry.label ? `${entry.label}: ` : ''
+  return `${name}area level ${entry.hell} in Hell, the highest tier in the game, so every item can drop here. This is what people mean by a level 85 area.`
 }
 
 function tooltip(name: string, key: (typeof DIFFICULTIES)[number]['key'], entry: AreaLevels): string {

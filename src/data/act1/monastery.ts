@@ -213,6 +213,10 @@ export const monastery: Area[] = [
     row: 2,
     column: 10.8,
     videoTime: 1102,
+    farming: [
+      { topic: 'Andariel for items', detail: 'The best early unique and set source in Act I, and a very short run once the Catacombs L2 waypoint is up.' },
+      { topic: 'Quest-quality drops', detail: 'Resurrected is widely reported to give her quest-level loot on every kill, so the old trick of leaving to Act 2 to lock in quest drops is not needed. Community reports disagree about whether a 2025 patch changed that again, so treat it as a bonus rather than a guarantee.' },
+    ],
     areaLevels: [{ normal: 12, nightmare: 43, hell: 73 }],
     features: [
       'Act 1 boss: Andariel',

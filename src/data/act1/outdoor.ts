@@ -118,6 +118,9 @@ export const outdoor: Area[] = [
     row: 2,
     column: 0,
     videoTime: 801,
+    farming: [
+      { topic: 'Bases and runes', detail: 'A lot of monsters in one square at area level 81: good for socketed bases, runes and charms rather than for unique items.' },
+    ],
     areaLevels: [{ normal: 28, nightmare: 64, hell: 81 }],
     optional: true,
     features: ['Boss: The Cow King'],

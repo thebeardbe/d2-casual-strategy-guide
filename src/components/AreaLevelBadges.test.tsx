@@ -116,3 +116,108 @@ describe('AreaLevelBadges when an area has none', () => {
     expect(container).toBeEmptyDOMElement()
   })
 })
+
+function topChips(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>('.levels__top'))
+}
+
+describe('AreaLevelBadges L85 marker', () => {
+  it('marks The Pit L1, whose Hell area level is 85', () => {
+    const { container } = render(<AreaLevelBadges area={areaById('pit-1')} />)
+
+    const chips = topChips(container)
+    expect(chips).toHaveLength(1)
+    expect(chips[0].textContent).toBe('L85')
+  })
+
+  it('does not mark Cathedral, whose Hell area level is 72', () => {
+    const { container } = render(<AreaLevelBadges area={areaById('cathedral')} />)
+
+    expect(topChips(container)).toHaveLength(0)
+  })
+
+  it('marks Underground Passage L2 and The Pit L2 as well', () => {
+    for (const id of ['underground-passage-2', 'pit-2']) {
+      const { container, unmount } = render(<AreaLevelBadges area={areaById(id)} />)
+      const chips = topChips(container)
+      expect(chips, id).toHaveLength(1)
+      expect(chips[0].textContent, id).toBe('L85')
+      unmount()
+    }
+  })
+
+  it('marks only the Mausoleum row, not the Crypt row (Hell 85 vs 83)', () => {
+    const { container } = render(<AreaLevelBadges area={areaById('mausoleum-crypt')} />)
+
+    const chips = topChips(container)
+    expect(chips).toHaveLength(1)
+
+    const rows = Array.from(container.querySelectorAll<HTMLElement>('.levels__row'))
+    expect(rows).toHaveLength(2)
+    expect(rows[0].querySelector('.levels__label')!.textContent).toBe('Mausoleum')
+    expect(rows[1].querySelector('.levels__label')!.textContent).toBe('Crypt')
+
+    expect(rows[0].querySelectorAll('.levels__top')).toHaveLength(1)
+    expect(rows[0].querySelector('.levels__top')!.textContent).toBe('L85')
+    expect(rows[1].querySelectorAll('.levels__top')).toHaveLength(0)
+  })
+
+  it('explains in the chip tooltip that 85 is the highest area level and every item can drop', () => {
+    const { container } = render(<AreaLevelBadges area={areaById('pit-1')} />)
+
+    const title = topChips(container)[0].getAttribute('title') ?? ''
+    expect(title).toContain('85')
+    expect(title).toMatch(/highest/i)
+    expect(title).toMatch(/every item/i)
+  })
+
+  it('mentions the L85 marker in the hint line under the grid', () => {
+    const { container } = render(<AreaLevelBadges area={areaById('pit-1')} />)
+
+    const hint = container.querySelector('.levels__hint')
+    expect(hint).not.toBeNull()
+    expect(hint!.textContent).toContain('L85')
+  })
+})
+
+describe('AreaLevelBadges L85 threshold', () => {
+  function synthetic(levels: { label?: string; hell: number }[]) {
+    return {
+      name: 'Synthetic Area',
+      areaLevels: levels.map((entry) => ({
+        label: entry.label,
+        normal: 1,
+        nightmare: 40,
+        hell: entry.hell,
+      })),
+    }
+  }
+
+  it('marks a Hell level just above the threshold, not only exactly 85', () => {
+    const { container } = render(<AreaLevelBadges area={synthetic([{ hell: 86 }])} />)
+
+    expect(topChips(container)).toHaveLength(1)
+  })
+
+  it('leaves a Hell level just below the threshold unmarked', () => {
+    const { container } = render(<AreaLevelBadges area={synthetic([{ hell: 84 }])} />)
+
+    expect(topChips(container)).toHaveLength(0)
+  })
+
+  it('flags only the qualifying row on a multi-row card', () => {
+    const { container } = render(
+      <AreaLevelBadges
+        area={synthetic([
+          { label: 'Low', hell: 84 },
+          { label: 'High', hell: 99 },
+        ])}
+      />,
+    )
+
+    const rows = Array.from(container.querySelectorAll<HTMLElement>('.levels__row'))
+    expect(rows).toHaveLength(2)
+    expect(rows[0].querySelectorAll('.levels__top')).toHaveLength(0)
+    expect(rows[1].querySelectorAll('.levels__top')).toHaveLength(1)
+  })
+})

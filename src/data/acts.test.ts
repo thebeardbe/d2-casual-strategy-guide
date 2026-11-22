@@ -497,3 +497,60 @@ describe('Act I area levels', () => {
     expect(byId.get('forgotten-tower')!.areaLevels).toBeUndefined()
   })
 })
+
+describe('Act I farming notes', () => {
+  const withFarming = act1.areas.filter((area) => area.farming)
+
+  it('fills in farming notes for exactly the areas the video calls out', () => {
+    // The review named these seven; a stray eighth would be an unreviewed claim
+    // on the card and a missing one would hide advice the video gives.
+    expect(withFarming.map((area) => area.id).sort()).toEqual([
+      'catacombs-4',
+      'cow-level',
+      'mausoleum-crypt',
+      'pit-1',
+      'pit-2',
+      'tower-cellar-5',
+      'underground-passage-2',
+    ])
+  })
+
+  it('gives every farming entry a non-empty topic and detail', () => {
+    for (const area of withFarming) {
+      expect(area.farming!.length, `${area.id} farming entries`).toBeGreaterThan(0)
+      for (const entry of area.farming!) {
+        expect(entry.topic.trim(), `${area.id} farming topic`).not.toBe('')
+        expect(entry.detail.trim(), `${area.id} farming detail`).not.toBe('')
+      }
+    }
+  })
+
+  it('never repeats a topic inside one area', () => {
+    for (const area of withFarming) {
+      const topics = area.farming!.map((entry) => entry.topic.trim())
+      expect(new Set(topics).size, `${area.id} topics ${JSON.stringify(topics)}`).toBe(topics.length)
+    }
+  })
+
+  it('marks Hell 85+ rows for exactly The Pit L1/L2, the Mausoleum and Underground Passage L2', () => {
+    const topAreas = act1.areas.filter((area) =>
+      (area.areaLevels ?? []).some((entry) => entry.hell >= 85),
+    )
+
+    expect(topAreas.map((area) => area.id).sort()).toEqual([
+      'mausoleum-crypt',
+      'pit-1',
+      'pit-2',
+      'underground-passage-2',
+    ])
+  })
+
+  it('keeps the Crypt row below 85 so the Mausoleum is the only flagged row on that card', () => {
+    const area = act1.areas.find((candidate) => candidate.id === 'mausoleum-crypt')!
+    const topRows = area.areaLevels!.filter((entry) => entry.hell >= 85)
+
+    expect(topRows).toHaveLength(1)
+    expect(topRows[0].label).toBe('Mausoleum')
+    expect(area.areaLevels!.find((entry) => entry.label === 'Crypt')!.hell).toBe(83)
+  })
+})

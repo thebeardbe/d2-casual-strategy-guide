@@ -47,6 +47,12 @@ export function AreaDetail({ act, area, onSelect, onClose }: AreaDetailProps) {
           </ul>
 
           <Section title="Features:" items={area.features} />
+          {area.farming && (
+            <Section
+              title="Worth farming:"
+              items={area.farming.map((entry) => `${entry.topic}: ${entry.detail}`)}
+            />
+          )}
           <Section title="Entrance:" items={area.entrance} />
           <Section title={area.exit.length > 1 ? 'Exits:' : 'Exit:'} items={area.exit} />
           {area.notes && <Section title="Good to know:" items={area.notes} />}

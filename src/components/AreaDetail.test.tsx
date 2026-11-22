@@ -273,3 +273,64 @@ describe('AreaDetail', () => {
     expect(screen.getByRole('button', { name: /^Jail - Level 2/ })).toHaveAttribute('aria-pressed', 'true')
   })
 })
+
+function follows(later: Node, earlier: Node): boolean {
+  return Boolean(earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING)
+}
+
+describe('AreaDetail farming section', () => {
+  it('renders one "topic: detail" item per farming entry for Tower Cellar L5', () => {
+    const area = areaById('tower-cellar-5')
+    expect(area.farming).toBeDefined()
+    renderDetail(area)
+
+    const heading = screen.getByRole('heading', { name: 'Worth farming:' })
+    const section = heading.closest('section')
+    expect(section).not.toBeNull()
+
+    const items = within(section as HTMLElement).getAllByRole('listitem')
+    expect(items).toHaveLength(area.farming!.length)
+    expect(items.map((item) => item.textContent)).toEqual(
+      area.farming!.map((entry) => `${entry.topic}: ${entry.detail}`),
+    )
+
+    const text = section!.textContent ?? ''
+    expect(text).toContain('Countess')
+    expect(text).toMatch(/players 1/i)
+  })
+
+  it('tells The Pit L1 visitor that it is a level 85 area', () => {
+    renderDetail(areaById('pit-1'))
+
+    const section = screen.getByRole('heading', { name: 'Worth farming:' }).closest('section')
+    expect(section).not.toBeNull()
+    expect(section!.textContent).toMatch(/level 85/i)
+  })
+
+  it('omits the section for an area without farming notes (Jail L2)', () => {
+    const area = areaById('jail-2')
+    expect(area.farming).toBeUndefined()
+    renderDetail(area)
+
+    expect(screen.queryByRole('heading', { name: 'Worth farming:' })).toBeNull()
+  })
+
+  it('omits the section when farming is an empty list', () => {
+    const area = { ...areaById('pit-1'), farming: [] }
+    renderDetail(area)
+
+    expect(screen.queryByRole('heading', { name: 'Worth farming:' })).toBeNull()
+  })
+
+  it('places the section between Features and Entrance in the document', () => {
+    renderDetail(areaById('tower-cellar-5'))
+
+    const features = screen.getByRole('heading', { name: 'Features:' })
+    const farming = screen.getByRole('heading', { name: 'Worth farming:' })
+    const entrance = screen.getByRole('heading', { name: 'Entrance:' })
+
+    expect(follows(farming, features), 'farming follows features').toBe(true)
+    expect(follows(farming, entrance), 'farming precedes entrance').toBe(false)
+    expect(follows(entrance, farming), 'entrance follows farming').toBe(true)
+  })
+})

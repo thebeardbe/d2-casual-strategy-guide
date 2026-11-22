@@ -93,6 +93,9 @@ export const dungeons: Area[] = [
     row: 0,
     column: 2.95,
     videoTime: 740,
+    farming: [
+      { topic: 'Level 85 area', detail: 'The Mausoleum is area level 85 in Hell, so every item can drop there. The Crypt beside it is 83, so farm the Mausoleum for the best bases.' },
+    ],
     areaLevels: [
       { label: 'Mausoleum', normal: 3, nightmare: 37, hell: 85 },
       { label: 'Crypt', normal: 3, nightmare: 37, hell: 83 },
@@ -139,6 +142,9 @@ export const dungeons: Area[] = [
     row: 2,
     column: 3.93,
     videoTime: 823,
+    farming: [
+      { topic: 'Level 85 area', detail: 'Upgraded to area level 85 in Resurrected, where Lord of Destruction had it at 83, so this one is now a level 85 area too.' },
+    ],
     areaLevels: [{ normal: 4, nightmare: 38, hell: 85 }],
     optional: true,
     features: ['Plain dead-end dungeon'],
@@ -232,6 +238,11 @@ export const dungeons: Area[] = [
     row: 0,
     column: 3.9,
     videoTime: 905,
+    farming: [
+      { topic: 'Countess runes', detail: 'She has a second, rune-only drop table that caps at Ist in Hell. Her normal drop can roll higher runes, but at ordinary monster odds.' },
+      { topic: 'Run her on players 1', detail: 'Her normal drop rolls first and more players push that table up, which leaves fewer rolls for the rune table. Players 1 gives the most rune attempts.' },
+      { topic: 'Terror Keys', detail: 'In Resurrected she also drops the Key of Terror used to open the Pandemonium Event.' },
+    ],
     areaLevels: [{ normal: 7, nightmare: 42, hell: 79 }],
     optional: true,
     features: ['2 layouts', 'Boss: The Countess', 'Quest: Forgotten Tower'],
@@ -254,6 +265,9 @@ export const dungeons: Area[] = [
     row: 2,
     column: 6.9,
     videoTime: 965,
+    farming: [
+      { topic: 'Level 85 area', detail: 'Every item in the game can drop here. It is a short walk back from the Outer Cloister waypoint, which is why the Pit is a standard early-ladder run.' },
+    ],
     areaLevels: [{ normal: 7, nightmare: 39, hell: 85 }],
     optional: true,
     features: ['Very easy access (follow path from Outer Cloister waypoint)'],
@@ -273,6 +287,9 @@ export const dungeons: Area[] = [
     row: 2,
     column: 7.83,
     videoTime: 980,
+    farming: [
+      { topic: 'Level 85 area', detail: 'The second floor is level 85 as well, so clearing both floors is worth the run.' },
+    ],
     areaLevels: [{ normal: 7, nightmare: 40, hell: 85 }],
     optional: true,
     features: ['Golden chest'],
