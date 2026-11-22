@@ -183,6 +183,7 @@ export const dungeons: Area[] = [
     exit: ['Tower Cellar L1'],
     rules: [{ turn: 'fixed' }],
     notes: [
+      'This card is the entry level only. The Tower Cellar levels below it are separate maps: L1 to L4 are counter-clockwise, and L5 has two layouts.',
       'Sitting near the border of Black Marsh makes the Countess run a short walk.',
     ],
   },
@@ -214,9 +215,13 @@ export const dungeons: Area[] = [
     column: 3.9,
     videoTime: 905,
     optional: true,
-    features: ['Two layouts', 'Boss: The Countess', 'Quest: Forgotten Tower'],
+    features: ['2 layouts', 'Boss: The Countess', 'Quest: Forgotten Tower'],
     entrance: ['From Tower Cellar L4'],
-    exit: ['Dead end'],
+    exit: [],
+    variants: [
+      { label: 'Two layouts only', detail: 'The level is one of two pre-built arrangements, and they mirror each other' },
+      { label: 'The Countess', detail: 'She sits in the back of the map in both of them' },
+    ],
     rules: [{ turn: 'alternating', note: 'Two mirrored layouts, Countess in the back' }],
     notes: ['One of the two layouts puts the Countess on the far side of the map.'],
     example: '/examples/tower-cellar-5.webp',

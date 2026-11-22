@@ -25,7 +25,7 @@ a rendered example of a variable map would be one random arrangement.
 | Hole - Level 2 | Fixed | Golden chest | From Hole L1 | Dead end | none | yes | 14:38 |
 | Forgotten Tower | Fixed | Smallest level in the game; No enemies | From Black Marsh, usually close to the map border | Tower Cellar L1 | none | no | 14:51 |
 | Tower Cellar - Levels 1-4 | Counter-Clockwise | Easy-to-read super chest tiles; Scales in size | From Forgotten Tower, then level to level | Next level down, counter-clockwise, until Tower Cellar L5 | none | no | 14:55 |
-| Tower Cellar - Level 5 | Alternating Fixed | Two layouts; Boss: The Countess; Quest: Forgotten Tower | From Tower Cellar L4 | Dead end | none | yes | 15:05 |
+| Tower Cellar - Level 5 | Alternating Fixed | 2 layouts; Boss: The Countess; Quest: Forgotten Tower | From Tower Cellar L4 | not listed | none | yes | 15:05 |
 | Tamoe Highland | Big Square | Convenient road | From Black Marsh | Monastery Gate / Outer Cloister, always the upper-right side; The Pit L1 | none | no | 15:20 |
 | The Pit - Level 1 | Counter-Clockwise | Very easy access (follow path from Outer Cloister waypoint) | From Tamoe Highland, or follow the path back from the Outer Cloister waypoint | The Pit L2, counter-clockwise | none | no | 16:05 |
 | The Pit - Level 2 | Fixed | Golden chest | From The Pit L1 | Dead end | none | yes | 16:20 |
